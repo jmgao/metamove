@@ -23,7 +23,6 @@
 #include <thread>
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
-#include <Carbon/Carbon.h>
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 struct cg_event_callback_data;
