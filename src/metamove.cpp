@@ -82,10 +82,7 @@ CGPoint ax_ui_element_get_position(AXUIElementRef element) {
 
 void ax_ui_element_set_position(AXUIElementRef element, CGPoint position) {
     AXValueRef position_wrapper = AXValueCreate(kAXValueCGPointType, &position);
-
-    if (AXUIElementSetAttributeValue(element, kAXPositionAttribute, position_wrapper) != kAXErrorSuccess) {
-        assert(false && "Unable to set element position");
-    }
+    AXUIElementSetAttributeValue(element, kAXPositionAttribute, position_wrapper);
     CFRelease(position_wrapper);
 }
 
@@ -108,12 +105,7 @@ CGSize ax_ui_element_get_size(AXUIElementRef element) {
 
 void ax_ui_element_set_size(AXUIElementRef element, CGSize size) {
     AXValueRef size_wrapper = AXValueCreate(kAXValueCGSizeType, &size);
-
-    assert(element);
-
-    if (AXUIElementSetAttributeValue(element, kAXSizeAttribute, size_wrapper) != kAXErrorSuccess) {
-        assert(false && "Unable to set element size");
-    }
+    AXUIElementSetAttributeValue(element, kAXSizeAttribute, size_wrapper);
     CFRelease(size_wrapper);
 }
 
