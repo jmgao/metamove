@@ -24,6 +24,7 @@
 #include <thread>
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include "config.h"
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 struct cg_event_callback_data;
@@ -127,7 +128,7 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
             }
 
             if (AXUIElementCopyElementAtPosition(accessibility_object, location.x, location.y, &element) != kAXErrorSuccess) {
-                printf("Failed to find element at (%f, %f)\n", location.x, location.y);
+                NSLog(@"Failed to find element at (%f, %f)\n", location.x, location.y);
                 goto abort;
             }
 
@@ -136,7 +137,7 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
                 AXUIElementRef window = nullptr;
 
                 if (AXUIElementCopyAttributeValue(element, kAXWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess) {
-                    printf("Failed to copy window for element at (%f, %f)\n", location.x, location.y);
+                    NSLog(@"Failed to copy window for element at (%f, %f)\n", location.x, location.y);
                     goto abort;
                 } else {
                     if (element != window) {
@@ -168,11 +169,11 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
             break;
 
         case kCGEventTapDisabledByTimeout:
-            printf("Timed out, what\n");
+            NSLog(@"Event tap was disabled by timeout, aborting\n");
             break;
 
         default:
-            printf("Unknown event %d\n", type);
+            NSLog(@"Unknown event %d\n", type);
             break;
     }
 
@@ -327,7 +328,7 @@ int main(int, const char *[]) {
         kCGEventFlagMaskAlternate | kCGEventFlagMaskShift,
         window_resize_callbacks);
 
-    printf("Initialized...\n");
+    NSLog(@"metamove v%s successfully initialized.", VERSION_STRING);
     CFRunLoopRun();
     return 0;
 }
