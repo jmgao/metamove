@@ -108,8 +108,7 @@ void ax_ui_element_set_size(AXUIElementRef element, CGSize size) {
     CFRelease(size_wrapper);
 }
 
-CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data)
-{
+CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data) {
     bool consume_event = false;
     AXUIElementRef element = nullptr;
     struct cg_event_callback_data *callback_data = static_cast<cg_event_callback_data *>(data);
