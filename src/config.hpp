@@ -19,6 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <ApplicationServices/ApplicationServices.h>
+
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 2
 #define VERSION_PATCH 0

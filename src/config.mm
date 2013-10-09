@@ -59,12 +59,12 @@ void set_button(CFStringRef key, config_mouse_button button) {
 
 config_mouse_button get_move_button(void) {
     config_mouse_button result = get_button(move_button_key);
-    return result != config_mouse_button::unknown ? result : config_mouse_button::left;
+    return result != config_mouse_button::unknown ? result : config_mouse_button::disabled;
 }
 
 config_mouse_button get_resize_button(void) {
     config_mouse_button result = get_button(resize_button_key);
-    return result != config_mouse_button::unknown ? result : config_mouse_button::left;
+    return result != config_mouse_button::unknown ? result : config_mouse_button::disabled;
 }
 
 void set_move_button(config_mouse_button button) {
