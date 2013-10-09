@@ -24,6 +24,7 @@
 #include <thread>
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <Foundation/Foundation.h>
 #include "config.h"
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
@@ -206,7 +207,23 @@ void create_event_tap(CFRunLoopRef run_loop, CGEventFlags modifiers, mouse_callb
     CFRelease(event_tap);
 }
 
+void suicide_callback(CFNotificationCenterRef, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
+    NSDictionary *data = (__bridge NSDictionary *)userInfo;
+    NSLog(@"Received suicide notification from sender '%@' for reason '%@'", [data objectForKey: @"sender"], [data objectForKey: @"reason"]);
+    CFRunLoopStop(CFRunLoopGetMain());
+}
+
+void status_callback(CFNotificationCenterRef notification_center, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
+    NSDictionary *data = (__bridge NSDictionary *)userInfo;
+    NSLog(@"Received status query from sender '%@'", [data objectForKey: @"sender"]);
+    CFNotificationCenterPostNotification(notification_center, NOTIFICATION_ALIVE, NOTIFICATION_OBJECT, (__bridge CFDictionaryRef)@{@"version" : @VERSION_STRING}, true);
+}
+
 int main(int, const char *[]) {
+    CFNotificationCenterRef notification_center = CFNotificationCenterGetDistributedCenter();
+    CFNotificationCenterAddObserver(notification_center, nullptr, suicide_callback, NOTIFICATION_SUICIDE, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(notification_center, nullptr, status_callback, NOTIFICATION_STATUS, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
+    
     mouse_callbacks window_move_callbacks = {
         [](CGEventTapProxy, CGEventType, CGEventRef, cg_event_callback_data *data, AXUIElementRef window) {
             auto move_data = new window_move_callback_data {

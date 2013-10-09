@@ -28,4 +28,8 @@
 #define STRINGIFY(x) STRINGIFY_(x)
 #define VERSION_STRING STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." STRINGIFY(VERSION_PATCH)
 
+#define NOTIFICATION_OBJECT     CFSTR("us.insolit.metamove") 
+#define NOTIFICATION_SUICIDE    CFSTR("us.insolit.metamove.suicide")
+#define NOTIFICATION_STATUS     CFSTR("us.insolit.metamove.status")
+#define NOTIFICATION_ALIVE      CFSTR("us.insolit.metamove.alive")
 #endif
