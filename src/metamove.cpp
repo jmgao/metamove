@@ -18,6 +18,7 @@
  */
 
 #include <cassert>
+#include <cstdint>
 #include <cstdio>
 #include <chrono>
 #include <thread>
@@ -48,16 +49,16 @@ struct cg_event_callback_data {
 
 struct window_move_callback_data {
     AXUIElementRef window;
-    ::std::atomic<int> delta_x;
-    ::std::atomic<int> delta_y;
+    ::std::atomic<int64_t> delta_x;
+    ::std::atomic<int64_t> delta_y;
     ::std::atomic<bool> completed;
     CGPoint window_position;
 };
 
 struct window_resize_callback_data {
     AXUIElementRef window;
-    ::std::atomic<int> delta_x;
-    ::std::atomic<int> delta_y;
+    ::std::atomic<int64_t> delta_x;
+    ::std::atomic<int64_t> delta_y;
     ::std::atomic<bool> completed;
     CGSize window_size;
 };
@@ -200,6 +201,8 @@ void create_event_tap(CFRunLoopRef run_loop, CGEventFlags modifiers, mouse_callb
             callback_data);
     CFRunLoopSourceRef run_loop_source = CFMachPortCreateRunLoopSource(nullptr, event_tap, 0);
     CFRunLoopAddSource(run_loop, run_loop_source, kCFRunLoopCommonModes);
+    CFRelease(run_loop_source);
+    CFRelease(event_tap);
 }
 
 int main(int, const char *[]) {
@@ -218,8 +221,8 @@ int main(int, const char *[]) {
             data->extra = move_data;
             ::std::thread([move_data](void) {
                 while (!move_data->completed) {
-                    int delta_x = move_data->delta_x.exchange(0);
-                    int delta_y = move_data->delta_y.exchange(0);
+                    int64_t delta_x = move_data->delta_x.exchange(0);
+                    int64_t delta_y = move_data->delta_y.exchange(0);
 
                     if (delta_x != 0 || delta_y != 0) {
                         move_data->window_position.x += delta_x;
@@ -241,8 +244,8 @@ int main(int, const char *[]) {
             if (!data->extra) return false;
 
             auto move_data = static_cast<window_move_callback_data *>(data->extra.load());
-            int delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
-            int delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
+            int64_t delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
+            int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
 
             assert(move_data);
             move_data->delta_x += delta_x;
@@ -273,8 +276,8 @@ int main(int, const char *[]) {
             data->extra = resize_data;
             ::std::thread([resize_data](void) {
                 while (!resize_data->completed) {
-                    int delta_x = resize_data->delta_x.exchange(0);
-                    int delta_y = resize_data->delta_y.exchange(0);
+                    int64_t delta_x = resize_data->delta_x.exchange(0);
+                    int64_t delta_y = resize_data->delta_y.exchange(0);
 
                     if (delta_x != 0 || delta_y != 0) {
                         resize_data->window_size.width += delta_x;
@@ -296,8 +299,8 @@ int main(int, const char *[]) {
             if (!data->extra) return false;
 
             auto resize_data = static_cast<window_move_callback_data *>(data->extra.load());
-            int delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
-            int delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
+            int64_t delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
+            int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
 
             assert(resize_data);
             resize_data->delta_x += delta_x;
