@@ -22,6 +22,11 @@
 #include <cstdio>
 #include <chrono>
 #include <thread>
+#include <mach/mach_time.h>
+#include <mach/task_policy.h>
+#include <mach/thread_act.h>
+#include <pthread.h>
+
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
 #include <Foundation/Foundation.h>
@@ -31,9 +36,12 @@ static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 struct cg_event_callback_data;
 
 // Returns true when the mouse event should be consumed
-typedef bool (*mouse_down_callback_t)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data, AXUIElementRef window);
-typedef bool (*mouse_drag_callback_t)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data);
-typedef bool (*mouse_up_callback_t)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data);
+typedef bool (*mouse_down_callback_t)(
+    CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data, AXUIElementRef window);
+typedef bool (*mouse_drag_callback_t)(
+    CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data);
+typedef bool (*mouse_up_callback_t)(
+    CGEventTapProxy proxy, CGEventType type, CGEventRef event, cg_event_callback_data *data);
 
 struct mouse_callbacks {
     mouse_down_callback_t mouse_down_callback;
@@ -199,9 +207,11 @@ void create_event_tap(CFRunLoopRef run_loop, CGEventFlags modifiers, mouse_callb
     CFMachPortRef event_tap =
         CGEventTapCreate(
             kCGSessionEventTap,
-            kCGHeadInsertEventTap, //kCGTailAppendEventTap,
+            kCGTailAppendEventTap,
             kCGEventTapOptionDefault,
-            CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventLeftMouseDragged) | CGEventMaskBit(kCGEventLeftMouseUp),
+            CGEventMaskBit(kCGEventLeftMouseDown) |
+            CGEventMaskBit(kCGEventLeftMouseDragged) |
+            CGEventMaskBit(kCGEventLeftMouseUp),
             cg_event_callback,
             callback_data);
     CFRunLoopSourceRef run_loop_source = CFMachPortCreateRunLoopSource(nullptr, event_tap, 0);
@@ -212,20 +222,78 @@ void create_event_tap(CFRunLoopRef run_loop, CGEventFlags modifiers, mouse_callb
 
 void suicide_callback(CFNotificationCenterRef, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
     NSDictionary *data = (__bridge NSDictionary *)userInfo;
-    NSLog(@"Received suicide notification from sender '%@' for reason '%@'", [data objectForKey: @"sender"], [data objectForKey: @"reason"]);
+    NSLog(@"Received suicide notification from sender '%@' for reason '%@'",
+        [data objectForKey: @"sender"],
+        [data objectForKey: @"reason"]);
     CFRunLoopStop(CFRunLoopGetMain());
 }
 
 void status_callback(CFNotificationCenterRef notification_center, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
     NSDictionary *data = (__bridge NSDictionary *)userInfo;
     NSLog(@"Received status query from sender '%@'", [data objectForKey: @"sender"]);
-    CFNotificationCenterPostNotification(notification_center, NOTIFICATION_ALIVE, NOTIFICATION_OBJECT, (__bridge CFDictionaryRef)@{@"version" : @VERSION_STRING}, true);
+    CFNotificationCenterPostNotification(
+        notification_center,
+        NOTIFICATION_ALIVE,
+        NOTIFICATION_OBJECT,
+        (__bridge CFDictionaryRef)@{@"version" : @VERSION_STRING},
+        true);
+}
+
+void set_thread_realtime(thread_port_t mach_thread_id ) {
+    thread_extended_policy_data_t policy;
+    policy.timeshare = 0;
+    thread_policy_set(
+        mach_thread_id,
+        THREAD_EXTENDED_POLICY,
+        (thread_policy_t)&policy,
+        THREAD_EXTENDED_POLICY_COUNT);
+
+    thread_precedence_policy_data_t precedence;
+    precedence.importance = 63;
+    thread_policy_set(
+        mach_thread_id,
+        THREAD_PRECEDENCE_POLICY,
+        (thread_policy_t)&precedence,
+        THREAD_PRECEDENCE_POLICY_COUNT);
+
+    const double time_quantum = 16.66666666666666666;
+    const double time_needed = 0.2 * time_quantum;
+    const double time_allowed = 0.85 * time_quantum;
+
+    mach_timebase_info_data_t tb_info;
+    mach_timebase_info(&tb_info);
+    double ms_to_abs_time =
+        ((double)tb_info.denom / (double)tb_info.numer) * 1000000;
+
+    thread_time_constraint_policy_data_t time_constraints;
+    time_constraints.period = time_quantum * ms_to_abs_time;
+    time_constraints.computation = time_needed * ms_to_abs_time;
+    time_constraints.constraint = time_allowed * ms_to_abs_time;
+    time_constraints.preemptible = 0;
+
+    thread_policy_set(
+        mach_thread_id,
+        THREAD_TIME_CONSTRAINT_POLICY,
+        (thread_policy_t)&time_constraints,
+        THREAD_TIME_CONSTRAINT_POLICY_COUNT);
 }
 
 int main(int, const char *[]) {
     CFNotificationCenterRef notification_center = CFNotificationCenterGetDistributedCenter();
-    CFNotificationCenterAddObserver(notification_center, nullptr, suicide_callback, NOTIFICATION_SUICIDE, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
-    CFNotificationCenterAddObserver(notification_center, nullptr, status_callback, NOTIFICATION_STATUS, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(
+        notification_center,
+        nullptr,
+        suicide_callback,
+        NOTIFICATION_SUICIDE,
+        NOTIFICATION_OBJECT,
+        CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(
+        notification_center,
+        nullptr,
+        status_callback,
+        NOTIFICATION_STATUS,
+        NOTIFICATION_OBJECT,
+        CFNotificationSuspensionBehaviorDeliverImmediately);
 
     mouse_callbacks window_move_callbacks = {
         [](CGEventTapProxy, CGEventType, CGEventRef, cg_event_callback_data *data, AXUIElementRef window) {
@@ -240,6 +308,7 @@ int main(int, const char *[]) {
             assert(!data->extra);
             data->extra = move_data;
             ::std::thread([move_data](void) {
+                set_thread_realtime(pthread_mach_thread_np(pthread_self()));
                 while (!move_data->completed) {
                     int64_t delta = move_data->delta.exchange(0);
 
@@ -253,7 +322,8 @@ int main(int, const char *[]) {
                             move_data->window,
                             move_data->window_position);
                     }
-                    ::std::this_thread::sleep_for(::std::chrono::microseconds(8333)); // 120 Hz
+
+                    ::std::this_thread::sleep_for(::std::chrono::milliseconds(1));
                 }
 
                 CFRelease(move_data->window);
@@ -305,6 +375,7 @@ int main(int, const char *[]) {
             assert(!data->extra);
             data->extra = resize_data;
             ::std::thread([resize_data](void) {
+                set_thread_realtime(pthread_mach_thread_np(pthread_self()));
                 while (!resize_data->completed) {
                     int64_t delta = resize_data->delta.exchange(0);
 
@@ -318,7 +389,8 @@ int main(int, const char *[]) {
                             resize_data->window,
                             resize_data->window_size);
                     }
-                    ::std::this_thread::sleep_for(::std::chrono::microseconds(8333)); // 120 Hz
+
+                    ::std::this_thread::sleep_for(::std::chrono::milliseconds(1));
                 }
 
                 CFRelease(resize_data->window);
