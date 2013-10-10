@@ -121,10 +121,13 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
         {
             CGPoint location = CGEventGetLocation(event);
             CFStringRef element_role = nullptr;
+            CGEventFlags flags = CGEventGetFlags(event);
 
-            if ((CGEventGetFlags(event) & callback_data->modifiers) != callback_data->modifiers) {
+            if ((flags & callback_data->modifiers) != callback_data->modifiers) {
                 goto abort;
             }
+
+            CGEventSetFlags(event, flags | kCGEventFlagMaskNonCoalesced);
 
             if (AXUIElementCopyElementAtPosition(accessibility_object, location.x, location.y, &element) != kAXErrorSuccess) {
                 NSLog(@"Failed to find element at (%f, %f)\n", location.x, location.y);
