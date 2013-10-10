@@ -51,16 +51,14 @@ struct cg_event_callback_data {
 
 struct window_move_callback_data {
     AXUIElementRef window;
-    ::std::atomic<int64_t> delta_x;
-    ::std::atomic<int64_t> delta_y;
+    ::std::atomic<int64_t> delta;
     ::std::atomic<bool> completed;
     CGPoint window_position;
 };
 
 struct window_resize_callback_data {
     AXUIElementRef window;
-    ::std::atomic<int64_t> delta_x;
-    ::std::atomic<int64_t> delta_y;
+    ::std::atomic<int64_t> delta;
     ::std::atomic<bool> completed;
     CGSize window_size;
 };
@@ -116,7 +114,7 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
     AXUIElementRef element = nullptr;
     struct cg_event_callback_data *callback_data = static_cast<cg_event_callback_data *>(data);
 
-    assert(AXAPIEnabled());
+    assert(AXAPIEnabled() || AXIsProcessTrusted());
 
     switch (type) {
         case kCGEventLeftMouseDown:
@@ -223,7 +221,7 @@ int main(int, const char *[]) {
     CFNotificationCenterRef notification_center = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(notification_center, nullptr, suicide_callback, NOTIFICATION_SUICIDE, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
     CFNotificationCenterAddObserver(notification_center, nullptr, status_callback, NOTIFICATION_STATUS, NOTIFICATION_OBJECT, CFNotificationSuspensionBehaviorDeliverImmediately);
-    
+
     mouse_callbacks window_move_callbacks = {
         [](CGEventTapProxy, CGEventType, CGEventRef, cg_event_callback_data *data, AXUIElementRef window) {
             auto move_data = new window_move_callback_data {
@@ -231,18 +229,18 @@ int main(int, const char *[]) {
                 .window_position = ax_ui_element_get_position(window)
             };
 
-            move_data->delta_x = 0;
-            move_data->delta_y = 0;
+            move_data->delta = 0;
             move_data->completed = false;
 
             assert(!data->extra);
             data->extra = move_data;
             ::std::thread([move_data](void) {
                 while (!move_data->completed) {
-                    int64_t delta_x = move_data->delta_x.exchange(0);
-                    int64_t delta_y = move_data->delta_y.exchange(0);
+                    int64_t delta = move_data->delta.exchange(0);
 
-                    if (delta_x != 0 || delta_y != 0) {
+                    if (delta != 0) {
+                        int delta_x = ((int32_t *)&delta)[0];
+                        int delta_y = ((int32_t *)&delta)[1];
                         move_data->window_position.x += delta_x;
                         move_data->window_position.y += delta_y;
 
@@ -266,8 +264,15 @@ int main(int, const char *[]) {
             int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
 
             assert(move_data);
-            move_data->delta_x += delta_x;
-            move_data->delta_y += delta_y;
+
+            int64_t previous = move_data->delta.load();
+            int64_t replacement;
+            do {
+                replacement = previous;
+                ((int32_t *)&replacement)[0] += delta_x;
+                ((int32_t *)&replacement)[1] += delta_y;
+            } while (!move_data->delta.compare_exchange_weak(previous, replacement));
+
             return true;
         },
         [](CGEventTapProxy, CGEventType, CGEventRef, cg_event_callback_data *data) {
@@ -286,18 +291,18 @@ int main(int, const char *[]) {
                 .window_size = ax_ui_element_get_size(window)
             };
 
-            resize_data->delta_x = 0;
-            resize_data->delta_y = 0;
+            resize_data->delta = 0;
             resize_data->completed = false;
 
             assert(!data->extra);
             data->extra = resize_data;
             ::std::thread([resize_data](void) {
                 while (!resize_data->completed) {
-                    int64_t delta_x = resize_data->delta_x.exchange(0);
-                    int64_t delta_y = resize_data->delta_y.exchange(0);
+                    int64_t delta = resize_data->delta.exchange(0);
 
-                    if (delta_x != 0 || delta_y != 0) {
+                    if (delta != 0) {
+                        int delta_x = ((int32_t *)&delta)[0];
+                        int delta_y = ((int32_t *)&delta)[1];
                         resize_data->window_size.width += delta_x;
                         resize_data->window_size.height += delta_y;
 
@@ -321,8 +326,14 @@ int main(int, const char *[]) {
             int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
 
             assert(resize_data);
-            resize_data->delta_x += delta_x;
-            resize_data->delta_y += delta_y;
+
+            int64_t previous = resize_data->delta.load();
+            int64_t replacement;
+            do {
+                replacement = previous;
+                ((int32_t *)&replacement)[0] += delta_x;
+                ((int32_t *)&replacement)[1] += delta_y;
+            } while (!resize_data->delta.compare_exchange_weak(previous, replacement));
 
             return true;
         },
