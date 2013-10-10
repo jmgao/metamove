@@ -46,6 +46,7 @@ struct cg_event_callback_data {
     mouse_down_callback_t mouse_down_callback;
     mouse_drag_callback_t mouse_drag_callback;
     mouse_up_callback_t mouse_up_callback;
+    CGPoint last_mouse_position;
     ::std::atomic<void *> extra;
 };
 
@@ -149,6 +150,7 @@ CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef
                 }
             }
 
+            callback_data->last_mouse_position = location;
             if (callback_data->mouse_down_callback) {
                 consume_event = callback_data->mouse_down_callback(proxy, type, event, callback_data, element);
             }
@@ -263,10 +265,13 @@ int main(int, const char *[]) {
             if (!data->extra) return false;
 
             auto move_data = static_cast<window_move_callback_data *>(data->extra.load());
-            int64_t delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
-            int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
 
             assert(move_data);
+
+            CGPoint location = CGEventGetLocation(event);
+            int64_t delta_x = location.x - data->last_mouse_position.x;
+            int64_t delta_y = location.y - data->last_mouse_position.y;
+            data->last_mouse_position = location;
 
             int64_t previous = move_data->delta.load();
             int64_t replacement;
@@ -325,10 +330,12 @@ int main(int, const char *[]) {
             if (!data->extra) return false;
 
             auto resize_data = static_cast<window_move_callback_data *>(data->extra.load());
-            int64_t delta_x = CGEventGetIntegerValueField(event, kCGMouseEventDeltaX);
-            int64_t delta_y = CGEventGetIntegerValueField(event, kCGMouseEventDeltaY);
-
             assert(resize_data);
+
+            CGPoint location = CGEventGetLocation(event);
+            int64_t delta_x = location.x - data->last_mouse_position.x;
+            int64_t delta_y = location.y - data->last_mouse_position.y;
+            data->last_mouse_position = location;
 
             int64_t previous = resize_data->delta.load();
             int64_t replacement;
