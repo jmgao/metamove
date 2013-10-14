@@ -221,7 +221,7 @@ void create_event_tap(CFRunLoopRef run_loop, CGEventFlags modifiers, mouse_callb
 }
 
 void suicide_callback(CFNotificationCenterRef, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
-    NSDictionary *data = (__bridge NSDictionary *)userInfo;
+    NSDictionary *data = (NSDictionary *)userInfo;
     NSLog(@"Received suicide notification from sender '%@' for reason '%@'",
         [data objectForKey: @"sender"],
         [data objectForKey: @"reason"]);
@@ -229,13 +229,13 @@ void suicide_callback(CFNotificationCenterRef, void *, CFStringRef, const void *
 }
 
 void status_callback(CFNotificationCenterRef notification_center, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
-    NSDictionary *data = (__bridge NSDictionary *)userInfo;
+    NSDictionary *data = (NSDictionary *)userInfo;
     NSLog(@"Received status query from sender '%@'", [data objectForKey: @"sender"]);
     CFNotificationCenterPostNotification(
         notification_center,
         NOTIFICATION_ALIVE,
         NOTIFICATION_OBJECT,
-        (__bridge CFDictionaryRef)@{@"version" : @VERSION_STRING},
+        (CFDictionaryRef)@{@"version" : @VERSION_STRING},
         true);
 }
 
