@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * metamove - XFree86 window movement for OS X
  * Copyright (C) 2013 jmgao
@@ -17,9 +19,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
-
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
 #define VERSION_PATCH 1
@@ -28,8 +27,7 @@
 #define STRINGIFY(x) STRINGIFY_(x)
 #define VERSION_STRING STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." STRINGIFY(VERSION_PATCH)
 
-#define NOTIFICATION_OBJECT     CFSTR("us.insolit.metamove") 
+#define NOTIFICATION_OBJECT     CFSTR("us.insolit.metamove")
 #define NOTIFICATION_SUICIDE    CFSTR("us.insolit.metamove.suicide")
 #define NOTIFICATION_STATUS     CFSTR("us.insolit.metamove.status")
 #define NOTIFICATION_ALIVE      CFSTR("us.insolit.metamove.alive")
-#endif
