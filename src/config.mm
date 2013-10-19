@@ -51,8 +51,10 @@ config_mouse_button get_button(CFStringRef key) {
 }
 
 void set_button(CFStringRef key, config_mouse_button button) {
-    CFPreferencesSetAppValue(key, CFNumberCreate(nullptr, kCFNumberCFIndexType, &button), application_id);
+    CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &button);
+    CFPreferencesSetAppValue(key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
+    CFRelease(value);
 }
 
 config_mouse_button get_move_button(void) {
@@ -88,11 +90,15 @@ CGEventMask get_resize_modifiers(void) {
 }
 
 void set_move_modifiers(CGEventMask modifiers) {
-    CFPreferencesSetAppValue(move_modifiers_key, CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers), application_id);
+    CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers);
+    CFPreferencesSetAppValue(move_modifiers_key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
+    CFRelease(value);
 }
 
 void set_resize_modifiers(CGEventMask modifiers) {
-    CFPreferencesSetAppValue(resize_modifiers_key, CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers), application_id);
+    CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers);
+    CFPreferencesSetAppValue(resize_modifiers_key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
+    CFRelease(value);
 }
