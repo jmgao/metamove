@@ -19,15 +19,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define VERSION_MAJOR 0
-#define VERSION_MINOR 1
-#define VERSION_PATCH 1
 
-#define STRINGIFY_(x) #x
-#define STRINGIFY(x) STRINGIFY_(x)
-#define VERSION_STRING STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." STRINGIFY(VERSION_PATCH)
+#include <mach/mach_time.h>
+#include <mach/task_policy.h>
+#include <mach/thread_act.h>
+#include <pthread.h>
 
-#define NOTIFICATION_OBJECT     CFSTR("us.insolit.metamove")
-#define NOTIFICATION_SUICIDE    CFSTR("us.insolit.metamove.suicide")
-#define NOTIFICATION_STATUS     CFSTR("us.insolit.metamove.status")
-#define NOTIFICATION_ALIVE      CFSTR("us.insolit.metamove.alive")
+void set_thread_realtime(thread_port_t mach_thread_id);
