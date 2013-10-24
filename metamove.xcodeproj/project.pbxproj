@@ -21,7 +21,6 @@
 		03B7777D18131F9C0088D6DE /* config.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776018131F2A0088D6DE /* config.mm */; };
 		03B7777E18131F9C0088D6DE /* event_tap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776218131F2A0088D6DE /* event_tap.mm */; };
 		03B7777F18131F9C0088D6DE /* metamove.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03A3ED4318051D320062A9F0 /* metamove.mm */; };
-		03B7778018131F9C0088D6DE /* thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776B18131F2A0088D6DE /* thread.mm */; };
 		03B7778118131F9C0088D6DE /* window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776D18131F2A0088D6DE /* window.mm */; };
 		03B7778218131F9C0088D6DE /* window_event_tap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776F18131F2A0088D6DE /* window_event_tap.mm */; };
 		03B7778318131FAC0088D6DE /* metamove_prefPane.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7777918131F3E0088D6DE /* metamove_prefPane.mm */; };
@@ -71,8 +70,6 @@
 		03B7776018131F2A0088D6DE /* config.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = config.mm; path = src/config.mm; sourceTree = SOURCE_ROOT; };
 		03B7776118131F2A0088D6DE /* event_tap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = event_tap.hpp; path = src/event_tap.hpp; sourceTree = SOURCE_ROOT; };
 		03B7776218131F2A0088D6DE /* event_tap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = event_tap.mm; path = src/event_tap.mm; sourceTree = SOURCE_ROOT; };
-		03B7776A18131F2A0088D6DE /* thread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = thread.hpp; path = src/thread.hpp; sourceTree = SOURCE_ROOT; };
-		03B7776B18131F2A0088D6DE /* thread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = thread.mm; path = src/thread.mm; sourceTree = SOURCE_ROOT; };
 		03B7776C18131F2A0088D6DE /* window.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = window.hpp; path = src/window.hpp; sourceTree = SOURCE_ROOT; };
 		03B7776D18131F2A0088D6DE /* window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = window.mm; path = src/window.mm; sourceTree = SOURCE_ROOT; };
 		03B7776E18131F2A0088D6DE /* window_event_tap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = window_event_tap.hpp; path = src/window_event_tap.hpp; sourceTree = SOURCE_ROOT; };
@@ -182,8 +179,6 @@
 				03B7776118131F2A0088D6DE /* event_tap.hpp */,
 				03B7776218131F2A0088D6DE /* event_tap.mm */,
 				03A3ED4318051D320062A9F0 /* metamove.mm */,
-				03B7776A18131F2A0088D6DE /* thread.hpp */,
-				03B7776B18131F2A0088D6DE /* thread.mm */,
 				03B7776C18131F2A0088D6DE /* window.hpp */,
 				03B7776D18131F2A0088D6DE /* window.mm */,
 				03B7776E18131F2A0088D6DE /* window_event_tap.hpp */,
@@ -312,7 +307,6 @@
 				03B7777D18131F9C0088D6DE /* config.mm in Sources */,
 				03B7777E18131F9C0088D6DE /* event_tap.mm in Sources */,
 				03B7777F18131F9C0088D6DE /* metamove.mm in Sources */,
-				03B7778018131F9C0088D6DE /* thread.mm in Sources */,
 				03B7778118131F9C0088D6DE /* window.mm in Sources */,
 				03B7778218131F9C0088D6DE /* window_event_tap.mm in Sources */,
 			);

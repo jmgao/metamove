@@ -41,8 +41,6 @@ WindowEventTap::WindowEventTap(
 }
 
 void WindowEventTap::worker_thread_perform(void) {
-    set_thread_realtime(pthread_mach_thread_np(pthread_self()));
-
     int64_t delta;
     while ((delta = this->delta.exchange(0)) != 0 || !this->completed) {
         auto start = std::chrono::high_resolution_clock::now();

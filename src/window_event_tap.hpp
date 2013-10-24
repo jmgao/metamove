@@ -22,13 +22,7 @@
 #include <cstdint>
 #include <atomic>
 #include <thread>
-#include <mach/mach_time.h>
-#include <mach/task_policy.h>
-#include <mach/thread_act.h>
-#include <pthread.h>
-
 #include "event_tap.hpp"
-#include "thread.hpp"
 
 class WindowEventTap : public EventTap {
 public:
