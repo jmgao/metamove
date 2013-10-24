@@ -45,14 +45,20 @@ void WindowEventTap::worker_thread_perform(void) {
 
     int64_t delta;
     while ((delta = this->delta.exchange(0)) != 0 || !this->completed) {
+        auto start = std::chrono::high_resolution_clock::now();
         if (delta != 0) {
             int32_t delta_x = ((int32_t *)&delta)[0];
             int32_t delta_y = ((int32_t *)&delta)[1];
 
             this->on_drag_callback(this->window, delta_x, delta_y);
         }
+        auto end = std::chrono::high_resolution_clock::now();
 
-        ::std::this_thread::sleep_for(::std::chrono::milliseconds(1));
+        static const auto desired_duration = std::chrono::microseconds(16667);
+        auto actual_duration = end - start;
+        if (actual_duration < desired_duration) {
+            std::this_thread::sleep_for(desired_duration - actual_duration);
+        }
     }
 
 }
