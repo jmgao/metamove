@@ -19,6 +19,7 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <Foundation/Foundation.h>
 #include "window.hpp"
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();

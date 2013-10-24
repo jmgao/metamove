@@ -19,6 +19,7 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <Foundation/Foundation.h>
 #include "event_tap.hpp"
 #include "window_event_tap.hpp"
 
