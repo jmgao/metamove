@@ -4,7 +4,7 @@ A utility for emulating XFree86-style Meta+click and drag window movement. The d
 
 ## Install
 * Enable access for assistive devices in the OS X Accessibility preferences.
-* Get the [latest release](https://github.com/jmgao/metamove/releases/tag/v0.2.0) and double click metamove.prefPane to install.
+* Get the [latest release](https://github.com/jmgao/metamove/releases/tag/v0.2.1) and double click metamove.prefPane to install.
 * Click Start!
 
 ## Uninstall
