@@ -41,7 +41,16 @@ void status_callback(CFNotificationCenterRef notification_center, void *, CFStri
         true);
 }
 
+extern Boolean AXIsProcessTrustedWithOptions(CFDictionaryRef options) __attribute__((weak_import));
+extern CFStringRef kAXTrustedCheckOptionPrompt __attribute__((weak_import));
+
 int main(int, const char *[]) {
+    if (AXIsProcessTrustedWithOptions && kAXTrustedCheckOptionPrompt) {
+        AXIsProcessTrustedWithOptions((CFDictionaryRef) @{
+            (NSString *) kAXTrustedCheckOptionPrompt : (NSNumber *)kCFBooleanTrue
+        });
+    }
+
     CFNotificationCenterRef notification_center = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(
         notification_center,
