@@ -94,7 +94,7 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
 
     this->delta = 0;
     this->completed = false;
-    this->worker_thread = ::std::thread(
+    this->worker_thread = std::thread(
         [this](void) {
             this->worker_thread_perform();
         });
@@ -143,9 +143,9 @@ MoveWindowEventTap::MoveWindowEventTap(
         WindowEventTap(
             event_mask,
             modifiers,
-            ::std::bind(&MoveWindowEventTap::on_drag_start, this, ::std::placeholders::_1),
-            ::std::bind(&MoveWindowEventTap::on_drag, this, ::std::placeholders::_1, ::std::placeholders::_2, ::std::placeholders::_3),
-            ::std::bind(&MoveWindowEventTap::on_drag_end, this, ::std::placeholders::_1),
+            std::bind(&MoveWindowEventTap::on_drag_start, this, std::placeholders::_1),
+            std::bind(&MoveWindowEventTap::on_drag, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+            std::bind(&MoveWindowEventTap::on_drag_end, this, std::placeholders::_1),
             raise_window_on_action)
 {
 }
@@ -177,9 +177,9 @@ ResizeWindowEventTap::ResizeWindowEventTap(
         WindowEventTap(
             event_mask,
             modifiers,
-            ::std::bind(&ResizeWindowEventTap::on_drag_start, this, ::std::placeholders::_1),
-            ::std::bind(&ResizeWindowEventTap::on_drag, this, ::std::placeholders::_1, ::std::placeholders::_2, ::std::placeholders::_3),
-            ::std::bind(&ResizeWindowEventTap::on_drag_end, this, ::std::placeholders::_1),
+            std::bind(&ResizeWindowEventTap::on_drag_start, this, std::placeholders::_1),
+            std::bind(&ResizeWindowEventTap::on_drag, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+            std::bind(&ResizeWindowEventTap::on_drag_end, this, std::placeholders::_1),
             raise_window_on_action)
 {
 }

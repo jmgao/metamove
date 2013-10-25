@@ -26,9 +26,9 @@
 
 class WindowEventTap : public EventTap {
 public:
-    using on_drag_start_callback_t = ::std::function< bool (AXUIElementRef window) >;
-    using on_drag_callback_t = ::std::function< bool (AXUIElementRef window, int64_t delta_x, int64_t delta_y) >;
-    using on_drag_end_callback_t = ::std::function< bool (AXUIElementRef window) >;
+    using on_drag_start_callback_t = std::function< bool (AXUIElementRef window) >;
+    using on_drag_callback_t = std::function< bool (AXUIElementRef window, int64_t delta_x, int64_t delta_y) >;
+    using on_drag_end_callback_t = std::function< bool (AXUIElementRef window) >;
 
 protected:
     CGEventFlags modifiers;
@@ -37,9 +37,9 @@ protected:
     on_drag_callback_t on_drag_callback;
     on_drag_end_callback_t on_drag_end_callback;
     bool raise_window_on_action;
-    ::std::atomic<int64_t> delta;
-    ::std::atomic<bool> completed;
-    ::std::thread worker_thread;
+    std::atomic<int64_t> delta;
+    std::atomic<bool> completed;
+    std::thread worker_thread;
 
 public:
     WindowEventTap(
