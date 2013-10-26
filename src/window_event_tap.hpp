@@ -25,17 +25,9 @@
 #include "event_tap.hpp"
 
 class WindowEventTap : public EventTap {
-public:
-    using on_drag_start_callback_t = std::function< bool (AXUIElementRef window) >;
-    using on_drag_callback_t = std::function< bool (AXUIElementRef window, int64_t delta_x, int64_t delta_y) >;
-    using on_drag_end_callback_t = std::function< bool (AXUIElementRef window) >;
-
 protected:
     CGEventFlags modifiers;
     AXUIElementRef window = nullptr;
-    on_drag_start_callback_t on_drag_start_callback;
-    on_drag_callback_t on_drag_callback;
-    on_drag_end_callback_t on_drag_end_callback;
     bool raise_window_on_action;
     std::atomic<int64_t> delta;
     std::atomic<bool> completed;
@@ -45,19 +37,17 @@ public:
     WindowEventTap(
         int64_t event_mask,
         CGEventFlags modifiers,
-        on_drag_start_callback_t on_drag_start_callback,
-        on_drag_callback_t on_drag_callback,
-        on_drag_end_callback_t on_drag_end_callback,
         bool raise_window_on_action);
 
 protected:
     void worker_thread_perform(void);
 
     virtual bool on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
-
     virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) override;
-
     virtual bool on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
+    virtual bool on_drag_start(void) = 0;
+    virtual void on_drag(int64_t delta_x, int64_t delta_y) = 0;
+    virtual void on_drag_end(void) = 0;
 };
 
 class MoveWindowEventTap : public WindowEventTap {
@@ -71,9 +61,9 @@ public:
         bool raise_window_on_action);
 
 private:
-    bool on_drag_start(AXUIElementRef window);
-    bool on_drag(AXUIElementRef window, int64_t delta_x, int64_t delta_y);
-    bool on_drag_end(AXUIElementRef window);
+    virtual bool on_drag_start(void) override;
+    virtual void on_drag(int64_t delta_x, int64_t delta_y) override;
+    virtual void on_drag_end(void) override;
 };
 
 class ResizeWindowEventTap : public WindowEventTap {
@@ -86,8 +76,8 @@ public:
         CGEventFlags modifiers,
         bool raise_window_on_action);
 
-private:
-    bool on_drag_start(AXUIElementRef window);
-    bool on_drag(AXUIElementRef window, int64_t delta_x, int64_t delta_y);
-    bool on_drag_end(AXUIElementRef window);
+protected:
+    virtual bool on_drag_start(void) override;
+    virtual void on_drag(int64_t delta_x, int64_t delta_y) override;
+    virtual void on_drag_end(void) override;
 };
