@@ -2,3 +2,5 @@
 DerivedData
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
+/build
+/metamove

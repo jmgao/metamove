@@ -1,0 +1,24 @@
+builddir = build
+cxx = clang++
+ar = ar
+cxxflags = -std=c++11 -stdlib=libc++ -Os -Wall -Wextra -Wno-unused-parameter -fcolor-diagnostics
+
+rule cxx
+  command = $cxx -MMD -MT $out -MF $out.d $cxxflags -c $in -o $out
+  description = CXX $out
+  depfile = $out.d
+
+rule link
+  command = $cxx $ldflags -o $out $in $libs
+  description = LINK $out
+
+build $builddir/config.o: cxx src/config.mm
+build $builddir/event_tap.o: cxx src/event_tap.mm
+build $builddir/metamove.o: cxx src/metamove.mm
+build $builddir/window.o: cxx src/window.mm
+build $builddir/window_event_tap.o: cxx src/window_event_tap.mm
+
+build metamove: link $builddir/config.o $builddir/event_tap.o $builddir/metamove.o $builddir/window.o $builddir/window_event_tap.o
+  libs = -lc++ -framework ApplicationServices -framework CoreFoundation -framework Foundation
+
+default metamove
