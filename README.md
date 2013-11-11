@@ -3,11 +3,10 @@
 A utility for emulating XFree86-style Meta+click and drag window movement. The default bindings are Cmd-Shift-Click for window movement, and Option-Shift-Click for window resizing.
 
 ## Install
-* Enable access for assistive devices in the OS X Accessibility preferences.
-* Get the [latest release](https://github.com/jmgao/metamove/releases/tag/v0.2.1) and double click metamove.prefPane to install.
-* Click Start!
+* Get the [latest release](https://github.com/jmgao/metamove/releases/tag/v0.3.0) and install it as a normal OS X application.
+* Use the tray menu to configure your bindings.
 
-## Uninstall
-* Click stop in the preference pane, or run `launchctl unload ~/Library/LaunchAgents/us.insolit.metamove.plist` 
-* Delete ~/Library/LaunchAgents/us.insolit.metamove.plist
-* Right click on metamove in the System Preferences and click remove
+## Copying
+metamove is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+Icons are courtesy of the [IcoMoon](http://icomoon.io/#icons) GPL icon pack.

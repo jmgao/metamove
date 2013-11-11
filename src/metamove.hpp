@@ -19,7 +19,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#import <AppKit/AppKit.h>
+extern "C" {
+    bool metamove_is_enabled(void);
+    void metamove_set_enabled(bool);
 
-@interface NSTextFieldClickable : NSTextField
-@end
+    void metamove_start(void);
+    void metamove_reconfigure(void);
+}

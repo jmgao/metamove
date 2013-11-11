@@ -7,15 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		038CBDC31813366300C390CF /* PreferencePaneView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 038CBDBF181335AD00C390CF /* PreferencePaneView.mm */; };
-		038CBDF01813375400C390CF /* metamove_prefPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B7777B18131F3E0088D6DE /* metamove_prefPane.xib */; };
-		038CBDF11813420600C390CF /* config.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776018131F2A0088D6DE /* config.mm */; };
-		038CBDF518134FEE00C390CF /* NSTextFieldClickable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 038CBDF318134FE700C390CF /* NSTextFieldClickable.mm */; };
-		038CBDF71813574D00C390CF /* us.insolit.metamove.plist in Sources */ = {isa = PBXBuildFile; fileRef = 038CBDF6181355D500C390CF /* us.insolit.metamove.plist */; };
-		038CBDFB18139EAE00C390CF /* launchd_manager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 038CBDF918139EA200C390CF /* launchd_manager.mm */; };
-		039B3660180622CC004DA35F /* metamove in Resources */ = {isa = PBXBuildFile; fileRef = 03A3ED3E18051D210062A9F0 /* metamove */; };
-		03A3ED2018051A960062A9F0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED1F18051A960062A9F0 /* Cocoa.framework */; };
-		03A3ED2218051A960062A9F0 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED2118051A960062A9F0 /* PreferencePanes.framework */; };
+		0308AAAB18357EDD00105E96 /* PreferenceWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308AAAA18357EDD00105E96 /* PreferenceWindow.xib */; };
+		037309D418340200002AFE3B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037309D318340200002AFE3B /* main.mm */; };
+		037309E918342406002AFE3B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED1F18051A960062A9F0 /* Cocoa.framework */; };
+		03730A0B18342469002AFE3B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03730A0418342469002AFE3B /* main.mm */; };
+		03730A0C18342469002AFE3B /* tray.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03730A0518342469002AFE3B /* tray.xib */; };
+		03730A0F18342469002AFE3B /* MetamoveTrayDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03730A0A18342469002AFE3B /* MetamoveTrayDelegate.mm */; };
+		03730A1318342650002AFE3B /* config.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776018131F2A0088D6DE /* config.mm */; };
+		03730A1418342650002AFE3B /* event_tap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776218131F2A0088D6DE /* event_tap.mm */; };
+		03730A1518342650002AFE3B /* metamove.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03A3ED4318051D320062A9F0 /* metamove.mm */; };
+		03730A1618342650002AFE3B /* window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776D18131F2A0088D6DE /* window.mm */; };
+		03730A1718342650002AFE3B /* window_event_tap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776F18131F2A0088D6DE /* window_event_tap.mm */; };
 		03A3ED4618051E2A0062A9F0 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED4518051E2A0062A9F0 /* ApplicationServices.framework */; };
 		03A3ED48180520770062A9F0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED47180520770062A9F0 /* CoreFoundation.framework */; };
 		03B7777D18131F9C0088D6DE /* config.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776018131F2A0088D6DE /* config.mm */; };
@@ -23,18 +25,14 @@
 		03B7777F18131F9C0088D6DE /* metamove.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03A3ED4318051D320062A9F0 /* metamove.mm */; };
 		03B7778118131F9C0088D6DE /* window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776D18131F2A0088D6DE /* window.mm */; };
 		03B7778218131F9C0088D6DE /* window_event_tap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7776F18131F2A0088D6DE /* window_event_tap.mm */; };
-		03B7778318131FAC0088D6DE /* metamove_prefPane.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03B7777918131F3E0088D6DE /* metamove_prefPane.mm */; };
+		03C15EC8183776E6001233F2 /* tray_icon_disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBA183776E6001233F2 /* tray_icon_disabled.png */; };
+		03C15EC9183776E6001233F2 /* tray_icon_disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBB183776E6001233F2 /* tray_icon_disabled@2x.png */; };
+		03C15ECA183776E6001233F2 /* tray_icon_enabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBC183776E6001233F2 /* tray_icon_enabled.png */; };
+		03C15ECB183776E6001233F2 /* tray_icon_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */; };
+		03C15ED318377884001233F2 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03C15ED218377884001233F2 /* icon.icns */; };
+		03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D21834941F007187FA /* PreferenceWindowController.mm */; };
+		03EF62D6183496FC007187FA /* NSTextFieldClickable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		03A3ED54180521570062A9F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 03A3ED1018051A520062A9F0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 03A3ED3D18051D210062A9F0;
-			remoteInfo = metamove;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		03A3ED3C18051D210062A9F0 /* CopyFiles */ = {
@@ -49,20 +47,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		038CBDBF181335AD00C390CF /* PreferencePaneView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferencePaneView.mm; path = src/prefpane/PreferencePaneView.mm; sourceTree = SOURCE_ROOT; };
-		038CBDC1181335C400C390CF /* PreferencePaneView.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PreferencePaneView.hh; path = src/prefpane/PreferencePaneView.hh; sourceTree = SOURCE_ROOT; };
-		038CBDF218134FE700C390CF /* NSTextFieldClickable.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NSTextFieldClickable.hh; path = src/prefpane/NSTextFieldClickable.hh; sourceTree = SOURCE_ROOT; };
-		038CBDF318134FE700C390CF /* NSTextFieldClickable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextFieldClickable.mm; path = src/prefpane/NSTextFieldClickable.mm; sourceTree = SOURCE_ROOT; };
-		038CBDF6181355D500C390CF /* us.insolit.metamove.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = us.insolit.metamove.plist; path = src/prefpane/us.insolit.metamove.plist; sourceTree = SOURCE_ROOT; };
-		038CBDF818139EA200C390CF /* launchd_manager.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = launchd_manager.hh; path = src/prefpane/launchd_manager.hh; sourceTree = SOURCE_ROOT; };
-		038CBDF918139EA200C390CF /* launchd_manager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = launchd_manager.mm; path = src/prefpane/launchd_manager.mm; sourceTree = SOURCE_ROOT; };
-		03A3ED1C18051A950062A9F0 /* metamove.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = metamove.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		0308AAAA18357EDD00105E96 /* PreferenceWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreferenceWindow.xib; path = src/tray/PreferenceWindow.xib; sourceTree = SOURCE_ROOT; };
+		037309891833F8AD002AFE3B /* metamove.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = metamove.hpp; path = src/metamove.hpp; sourceTree = SOURCE_ROOT; };
+		037309D318340200002AFE3B /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = src/cli/main.mm; sourceTree = SOURCE_ROOT; };
+		037309E818342406002AFE3B /* metamove.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = metamove.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		037309F018342406002AFE3B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		03730A0418342469002AFE3B /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = src/tray/main.mm; sourceTree = SOURCE_ROOT; };
+		03730A0518342469002AFE3B /* tray.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = tray.xib; path = src/tray/tray.xib; sourceTree = SOURCE_ROOT; };
+		03730A0918342469002AFE3B /* MetamoveTrayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MetamoveTrayDelegate.h; path = src/tray/MetamoveTrayDelegate.h; sourceTree = SOURCE_ROOT; };
+		03730A0A18342469002AFE3B /* MetamoveTrayDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MetamoveTrayDelegate.mm; path = src/tray/MetamoveTrayDelegate.mm; sourceTree = SOURCE_ROOT; };
+		03730A10183424F6002AFE3B /* metamove-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "metamove-Info.plist"; path = "src/tray/metamove-Info.plist"; sourceTree = SOURCE_ROOT; };
 		03A3ED1F18051A960062A9F0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		03A3ED2118051A960062A9F0 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
 		03A3ED2418051A960062A9F0 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		03A3ED2518051A960062A9F0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		03A3ED2618051A960062A9F0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		03A3ED3E18051D210062A9F0 /* metamove */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = metamove; sourceTree = BUILT_PRODUCTS_DIR; };
+		03A3ED3E18051D210062A9F0 /* metamove_cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = metamove_cli; sourceTree = BUILT_PRODUCTS_DIR; };
 		03A3ED4318051D320062A9F0 /* metamove.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = metamove.mm; path = src/metamove.mm; sourceTree = SOURCE_ROOT; };
 		03A3ED4518051E2A0062A9F0 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		03A3ED47180520770062A9F0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -74,20 +74,22 @@
 		03B7776D18131F2A0088D6DE /* window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = window.mm; path = src/window.mm; sourceTree = SOURCE_ROOT; };
 		03B7776E18131F2A0088D6DE /* window_event_tap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = window_event_tap.hpp; path = src/window_event_tap.hpp; sourceTree = SOURCE_ROOT; };
 		03B7776F18131F2A0088D6DE /* window_event_tap.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = window_event_tap.mm; path = src/window_event_tap.mm; sourceTree = SOURCE_ROOT; };
-		03B7777718131F3E0088D6DE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = src/prefpane/Info.plist; sourceTree = SOURCE_ROOT; };
-		03B7777818131F3E0088D6DE /* metamove_prefPane.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = metamove_prefPane.hh; path = src/prefpane/metamove_prefPane.hh; sourceTree = SOURCE_ROOT; };
-		03B7777918131F3E0088D6DE /* metamove_prefPane.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = metamove_prefPane.mm; path = src/prefpane/metamove_prefPane.mm; sourceTree = SOURCE_ROOT; };
-		03B7777A18131F3E0088D6DE /* metamove_prefPane.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = metamove_prefPane.tiff; path = src/prefpane/metamove_prefPane.tiff; sourceTree = SOURCE_ROOT; };
-		03B7777B18131F3E0088D6DE /* metamove_prefPane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = metamove_prefPane.xib; path = src/prefpane/metamove_prefPane.xib; sourceTree = SOURCE_ROOT; };
+		03C15EBA183776E6001233F2 /* tray_icon_disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tray_icon_disabled.png; path = src/tray/icons/tray_icon_disabled.png; sourceTree = SOURCE_ROOT; };
+		03C15EBB183776E6001233F2 /* tray_icon_disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tray_icon_disabled@2x.png"; path = "src/tray/icons/tray_icon_disabled@2x.png"; sourceTree = SOURCE_ROOT; };
+		03C15EBC183776E6001233F2 /* tray_icon_enabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tray_icon_enabled.png; path = src/tray/icons/tray_icon_enabled.png; sourceTree = SOURCE_ROOT; };
+		03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tray_icon_enabled@2x.png"; path = "src/tray/icons/tray_icon_enabled@2x.png"; sourceTree = SOURCE_ROOT; };
+		03C15ED218377884001233F2 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = src/tray/icons/icon.icns; sourceTree = SOURCE_ROOT; };
+		03EF62D11834941F007187FA /* PreferenceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferenceWindowController.h; path = src/tray/PreferenceWindowController.h; sourceTree = SOURCE_ROOT; };
+		03EF62D21834941F007187FA /* PreferenceWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferenceWindowController.mm; path = src/tray/PreferenceWindowController.mm; sourceTree = SOURCE_ROOT; };
+		03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextFieldClickable.mm; path = src/tray/NSTextFieldClickable.mm; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		03A3ED1718051A950062A9F0 /* Frameworks */ = {
+		037309E518342406002AFE3B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03A3ED2018051A960062A9F0 /* Cocoa.framework in Frameworks */,
-				03A3ED2218051A960062A9F0 /* PreferencePanes.framework in Frameworks */,
+				037309E918342406002AFE3B /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,11 +105,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		037309D2183401F6002AFE3B /* cli */ = {
+			isa = PBXGroup;
+			children = (
+				037309D318340200002AFE3B /* main.mm */,
+			);
+			name = cli;
+			sourceTree = "<group>";
+		};
+		03730A0318342461002AFE3B /* tray */ = {
+			isa = PBXGroup;
+			children = (
+				03730A0418342469002AFE3B /* main.mm */,
+				03730A0918342469002AFE3B /* MetamoveTrayDelegate.h */,
+				03730A0A18342469002AFE3B /* MetamoveTrayDelegate.mm */,
+				03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */,
+				03EF62D11834941F007187FA /* PreferenceWindowController.h */,
+				03EF62D21834941F007187FA /* PreferenceWindowController.mm */,
+				03730A1218342537002AFE3B /* Supporting Files */,
+			);
+			name = tray;
+			sourceTree = "<group>";
+		};
+		03730A1218342537002AFE3B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03C15ED218377884001233F2 /* icon.icns */,
+				03C15EBA183776E6001233F2 /* tray_icon_disabled.png */,
+				03C15EBB183776E6001233F2 /* tray_icon_disabled@2x.png */,
+				03C15EBC183776E6001233F2 /* tray_icon_enabled.png */,
+				03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */,
+				03730A10183424F6002AFE3B /* metamove-Info.plist */,
+				0308AAAA18357EDD00105E96 /* PreferenceWindow.xib */,
+				03730A0518342469002AFE3B /* tray.xib */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		03A3ED0F18051A520062A9F0 = {
 			isa = PBXGroup;
 			children = (
 				03A3ED3F18051D210062A9F0 /* metamove */,
-				03A3ED2718051A960062A9F0 /* metamove.prefPane */,
 				03A3ED1E18051A950062A9F0 /* Frameworks */,
 				03A3ED1D18051A950062A9F0 /* Products */,
 			);
@@ -116,8 +154,8 @@
 		03A3ED1D18051A950062A9F0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				03A3ED1C18051A950062A9F0 /* metamove.prefPane */,
-				03A3ED3E18051D210062A9F0 /* metamove */,
+				03A3ED3E18051D210062A9F0 /* metamove_cli */,
+				037309E818342406002AFE3B /* metamove.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,6 +167,7 @@
 				03A3ED4518051E2A0062A9F0 /* ApplicationServices.framework */,
 				03A3ED1F18051A960062A9F0 /* Cocoa.framework */,
 				03A3ED2118051A960062A9F0 /* PreferencePanes.framework */,
+				037309F018342406002AFE3B /* XCTest.framework */,
 				03A3ED2318051A960062A9F0 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -144,40 +183,16 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		03A3ED2718051A960062A9F0 /* metamove.prefPane */ = {
-			isa = PBXGroup;
-			children = (
-				038CBDF818139EA200C390CF /* launchd_manager.hh */,
-				038CBDF918139EA200C390CF /* launchd_manager.mm */,
-				03B7777818131F3E0088D6DE /* metamove_prefPane.hh */,
-				03B7777918131F3E0088D6DE /* metamove_prefPane.mm */,
-				038CBDF218134FE700C390CF /* NSTextFieldClickable.hh */,
-				038CBDF318134FE700C390CF /* NSTextFieldClickable.mm */,
-				038CBDC1181335C400C390CF /* PreferencePaneView.hh */,
-				038CBDBF181335AD00C390CF /* PreferencePaneView.mm */,
-				03A3ED2818051A960062A9F0 /* Supporting Files */,
-			);
-			path = metamove.prefPane;
-			sourceTree = "<group>";
-		};
-		03A3ED2818051A960062A9F0 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				03B7777718131F3E0088D6DE /* Info.plist */,
-				03B7777A18131F3E0088D6DE /* metamove_prefPane.tiff */,
-				03B7777B18131F3E0088D6DE /* metamove_prefPane.xib */,
-				038CBDF6181355D500C390CF /* us.insolit.metamove.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		03A3ED3F18051D210062A9F0 /* metamove */ = {
 			isa = PBXGroup;
 			children = (
+				037309D2183401F6002AFE3B /* cli */,
+				03730A0318342461002AFE3B /* tray */,
 				03B7775F18131F2A0088D6DE /* config.hpp */,
 				03B7776018131F2A0088D6DE /* config.mm */,
 				03B7776118131F2A0088D6DE /* event_tap.hpp */,
 				03B7776218131F2A0088D6DE /* event_tap.mm */,
+				037309891833F8AD002AFE3B /* metamove.hpp */,
 				03A3ED4318051D320062A9F0 /* metamove.mm */,
 				03B7776C18131F2A0088D6DE /* window.hpp */,
 				03B7776D18131F2A0088D6DE /* window.mm */,
@@ -189,40 +204,27 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		03A3ED1818051A950062A9F0 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		03A3ED1B18051A950062A9F0 /* metamove.prefPane */ = {
+		037309E718342406002AFE3B /* metamove */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 03A3ED3818051A960062A9F0 /* Build configuration list for PBXNativeTarget "metamove.prefPane" */;
+			buildConfigurationList = 037309FD18342406002AFE3B /* Build configuration list for PBXNativeTarget "metamove" */;
 			buildPhases = (
-				03A3ED1618051A950062A9F0 /* Sources */,
-				03A3ED1718051A950062A9F0 /* Frameworks */,
-				03A3ED1818051A950062A9F0 /* Headers */,
-				03A3ED1918051A950062A9F0 /* Resources */,
-				03A3ED1A18051A950062A9F0 /* Rez */,
+				037309E418342406002AFE3B /* Sources */,
+				037309E518342406002AFE3B /* Frameworks */,
+				037309E618342406002AFE3B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				03A3ED55180521570062A9F0 /* PBXTargetDependency */,
 			);
-			name = metamove.prefPane;
-			productName = metamove.prefPane;
-			productReference = 03A3ED1C18051A950062A9F0 /* metamove.prefPane */;
-			productType = "com.apple.product-type.bundle";
+			name = metamove;
+			productName = metamove;
+			productReference = 037309E818342406002AFE3B /* metamove.app */;
+			productType = "com.apple.product-type.application";
 		};
-		03A3ED3D18051D210062A9F0 /* metamove */ = {
+		03A3ED3D18051D210062A9F0 /* metamove_cli */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 03A3ED4018051D210062A9F0 /* Build configuration list for PBXNativeTarget "metamove" */;
+			buildConfigurationList = 03A3ED4018051D210062A9F0 /* Build configuration list for PBXNativeTarget "metamove_cli" */;
 			buildPhases = (
 				03A3ED3A18051D210062A9F0 /* Sources */,
 				03A3ED3B18051D210062A9F0 /* Frameworks */,
@@ -232,9 +234,9 @@
 			);
 			dependencies = (
 			);
-			name = metamove;
+			name = metamove_cli;
 			productName = metamove;
-			productReference = 03A3ED3E18051D210062A9F0 /* metamove */;
+			productReference = 03A3ED3E18051D210062A9F0 /* metamove_cli */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -258,45 +260,43 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				03A3ED3D18051D210062A9F0 /* metamove */,
-				03A3ED1B18051A950062A9F0 /* metamove.prefPane */,
+				037309E718342406002AFE3B /* metamove */,
+				03A3ED3D18051D210062A9F0 /* metamove_cli */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		03A3ED1918051A950062A9F0 /* Resources */ = {
+		037309E618342406002AFE3B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				039B3660180622CC004DA35F /* metamove in Resources */,
-				038CBDF01813375400C390CF /* metamove_prefPane.xib in Resources */,
+				03C15ECB183776E6001233F2 /* tray_icon_enabled@2x.png in Resources */,
+				03C15ED318377884001233F2 /* icon.icns in Resources */,
+				03C15EC8183776E6001233F2 /* tray_icon_disabled.png in Resources */,
+				03C15EC9183776E6001233F2 /* tray_icon_disabled@2x.png in Resources */,
+				03C15ECA183776E6001233F2 /* tray_icon_enabled.png in Resources */,
+				0308AAAB18357EDD00105E96 /* PreferenceWindow.xib in Resources */,
+				03730A0C18342469002AFE3B /* tray.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXRezBuildPhase section */
-		03A3ED1A18051A950062A9F0 /* Rez */ = {
-			isa = PBXRezBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXRezBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		03A3ED1618051A950062A9F0 /* Sources */ = {
+		037309E418342406002AFE3B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				038CBDF11813420600C390CF /* config.mm in Sources */,
-				038CBDFB18139EAE00C390CF /* launchd_manager.mm in Sources */,
-				03B7778318131FAC0088D6DE /* metamove_prefPane.mm in Sources */,
-				038CBDF518134FEE00C390CF /* NSTextFieldClickable.mm in Sources */,
-				038CBDC31813366300C390CF /* PreferencePaneView.mm in Sources */,
-				038CBDF71813574D00C390CF /* us.insolit.metamove.plist in Sources */,
+				03730A0F18342469002AFE3B /* MetamoveTrayDelegate.mm in Sources */,
+				03730A0B18342469002AFE3B /* main.mm in Sources */,
+				03EF62D6183496FC007187FA /* NSTextFieldClickable.mm in Sources */,
+				03730A1318342650002AFE3B /* config.mm in Sources */,
+				03730A1418342650002AFE3B /* event_tap.mm in Sources */,
+				03730A1518342650002AFE3B /* metamove.mm in Sources */,
+				03730A1618342650002AFE3B /* window.mm in Sources */,
+				03730A1718342650002AFE3B /* window_event_tap.mm in Sources */,
+				03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				037309D418340200002AFE3B /* main.mm in Sources */,
 				03B7777D18131F9C0088D6DE /* config.mm in Sources */,
 				03B7777E18131F9C0088D6DE /* event_tap.mm in Sources */,
 				03B7777F18131F9C0088D6DE /* metamove.mm in Sources */,
@@ -314,34 +315,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		03A3ED55180521570062A9F0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 03A3ED3D18051D210062A9F0 /* metamove */;
-			targetProxy = 03A3ED54180521570062A9F0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		03A3ED1418051A520062A9F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		03A3ED1518051A520062A9F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		03A3ED3618051A960062A9F0 /* Debug */ = {
+		037309FE18342406002AFE3B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -356,8 +337,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -369,23 +349,23 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = src/prefpane/Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = metamove;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				WRAPPER_EXTENSION = prefPane;
+				USER_HEADER_SEARCH_PATHS = src/;
+				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		03A3ED3718051A960062A9F0 /* Release */ = {
+		037309FF18342406002AFE3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -400,20 +380,33 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = src/prefpane/Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = metamove;
+				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				WRAPPER_EXTENSION = prefPane;
+				USER_HEADER_SEARCH_PATHS = src/;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		03A3ED1418051A520062A9F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+			};
+			name = Debug;
+		};
+		03A3ED1518051A520062A9F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 			};
 			name = Release;
 		};
@@ -438,6 +431,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_MATH = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -483,6 +477,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_FAST_MATH = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -503,6 +498,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		037309FD18342406002AFE3B /* Build configuration list for PBXNativeTarget "metamove" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				037309FE18342406002AFE3B /* Debug */,
+				037309FF18342406002AFE3B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		03A3ED1318051A520062A9F0 /* Build configuration list for PBXProject "metamove" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -512,16 +516,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		03A3ED3818051A960062A9F0 /* Build configuration list for PBXNativeTarget "metamove.prefPane" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				03A3ED3618051A960062A9F0 /* Debug */,
-				03A3ED3718051A960062A9F0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		03A3ED4018051D210062A9F0 /* Build configuration list for PBXNativeTarget "metamove" */ = {
+		03A3ED4018051D210062A9F0 /* Build configuration list for PBXNativeTarget "metamove_cli" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03A3ED4118051D210062A9F0 /* Debug */,

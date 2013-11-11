@@ -3,32 +3,36 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>icon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>us.insolit.metamove</string>
+	<string>us.insolit.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>metamove</string>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
+	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2013 Josh Gao. All rights reserved.</string>
 	<key>NSMainNibFile</key>
-	<string>metamove_prefPane</string>
-	<key>NSPrefPaneIconFile</key>
-	<string>metamove_prefPane.tiff</string>
-	<key>NSPrefPaneIconLabel</key>
-	<string>metamove</string>
+	<string>tray</string>
 	<key>NSPrincipalClass</key>
-	<string>metamove_prefPane</string>
+	<string>NSApplication</string>
 </dict>
 </plist>

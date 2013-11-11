@@ -17,13 +17,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 #import "config.hpp"
-#import "launchd_manager.hh"
-#import "PreferencePaneView.hh"
+#import "metamove.hpp"
+#import "tray/PreferenceWindowController.h"
 
-@implementation PreferencePaneView
+static PreferenceWindowController *instance = nullptr;
 
-@synthesize startStopButton;
+@implementation PreferenceWindowController
 
 @synthesize moveRadioButtons;
 @synthesize moveModifierControlButton;
@@ -40,27 +42,26 @@
 @synthesize versionLabel;
 @synthesize urlLabel;
 
-- (void)
-viewWillMoveToWindow:
-    (NSWindow *) newWindow
++ (PreferenceWindowController *)
+shared
 {
-    [self updateStatus];
+    @synchronized(self) {
+        if (!instance) {
+            instance = [PreferenceWindowController alloc];
+            instance = [instance initWithWindowNibName: @"PreferenceWindow" owner: instance];
+        }
+
+        return instance;
+    }
+}
+
+- (void)
+windowDidLoad
+{
     [self loadSettings];
     [versionLabel setStringValue: [NSString stringWithFormat: @"metamove v%s", VERSION_STRING]];
 }
 
-- (void)
-updateStatus {
-    if ([launchd_manager isRunning]) {
-        [startStopButton setEnabled: false forSegment: 0];
-        [startStopButton setEnabled: true forSegment: 1];
-        [startStopButton setSelectedSegment: 0];
-    } else {
-        [startStopButton setEnabled: true forSegment: 0];
-        [startStopButton setEnabled: false forSegment: 1];
-        [startStopButton setSelectedSegment: 1];
-    }
-}
 
 - (void)
 loadSettings
@@ -99,36 +100,11 @@ saveSettings
 }
 
 - (IBAction)
-startStopButtonClicked:
-    (id) sender
-{
-    if ([startStopButton isEnabledForSegment: 0]) {
-        // Start button was clicked
-        [launchd_manager start];
-    } else {
-        [launchd_manager stop];
-    }
-
-    [self updateStatus];
-}
-
-- (IBAction)
 configButtonClicked:
     (id) sender
 {
     [self saveSettings];
-
-    // Restart the daemon
-    static CFNotificationCenterRef distributed_center = CFNotificationCenterGetDistributedCenter();
-    CFNotificationCenterPostNotification(
-        distributed_center,
-        NOTIFICATION_SUICIDE,
-        NOTIFICATION_OBJECT,
-        (CFDictionaryRef) @{
-            @"sender" : @"metamove-prefpane",
-            @"reason" : @"Configuration changed"
-        },
-        true);
+    metamove_reconfigure();
 }
 
 - (IBAction)

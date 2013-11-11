@@ -24,7 +24,8 @@
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 
-AXUIElementRef window_get_from_point(CGPoint point) {
+AXUIElementRef window_get_from_point(CGPoint point)
+{
     AXUIElementRef element = nullptr;
     CFStringRef element_role = nullptr;
 
@@ -53,7 +54,8 @@ abort:
     return element;
 }
 
-AXUIElementRef window_copy_application(AXUIElementRef window) {
+AXUIElementRef window_copy_application(AXUIElementRef window)
+{
     AXUIElementRef current;
     AXUIElementCopyAttributeValue(window, kAXParentAttribute, (CFTypeRef *)&current);
 
@@ -75,48 +77,52 @@ AXUIElementRef window_copy_application(AXUIElementRef window) {
     return current;
 }
 
-CGPoint window_get_position(AXUIElementRef widnow) {
+CGPoint window_get_position(AXUIElementRef window)
+{
     AXValueRef position_wrapper = nullptr;
     CGPoint result;
 
-    if (AXUIElementCopyAttributeValue(widnow, kAXPositionAttribute, (CFTypeRef *)&position_wrapper) != kAXErrorSuccess) {
-        assert(false && "Unable to get AXValueRef for widnow position");
+    if (AXUIElementCopyAttributeValue(window, kAXPositionAttribute, (CFTypeRef *)&position_wrapper) != kAXErrorSuccess) {
+        assert(false && "Unable to get AXValueRef for window position");
     }
 
     assert(AXValueGetType(position_wrapper) == kAXValueCGPointType);
     if (!AXValueGetValue(position_wrapper, kAXValueCGPointType, &result)) {
-        assert(false && "Unable to get CGPoint for widnow position");
+        assert(false && "Unable to get CGPoint for window position");
     }
 
     CFRelease(position_wrapper);
     return result;
 }
 
-void window_set_position(AXUIElementRef widnow, CGPoint position) {
+void window_set_position(AXUIElementRef window, CGPoint position)
+{
     AXValueRef position_wrapper = AXValueCreate(kAXValueCGPointType, &position);
-    AXUIElementSetAttributeValue(widnow, kAXPositionAttribute, position_wrapper);
+    AXUIElementSetAttributeValue(window, kAXPositionAttribute, position_wrapper);
     CFRelease(position_wrapper);
 }
 
-CGSize window_get_size(AXUIElementRef widnow) {
+CGSize window_get_size(AXUIElementRef window)
+{
     AXValueRef size_wrapper = nullptr;
     CGSize result;
 
-    if (AXUIElementCopyAttributeValue(widnow, kAXSizeAttribute, (CFTypeRef *)&size_wrapper) != kAXErrorSuccess) {
-        assert(false && "Unable to get AXValueRef for widnow size");
+    if (AXUIElementCopyAttributeValue(window, kAXSizeAttribute, (CFTypeRef *)&size_wrapper) != kAXErrorSuccess) {
+        assert(false && "Unable to get AXValueRef for window size");
     }
 
     assert(AXValueGetType(size_wrapper) == kAXValueCGSizeType);
     if (!AXValueGetValue(size_wrapper, kAXValueCGSizeType, &result)) {
-        assert(false && "Unable to get CGSize for widnow size");
+        assert(false && "Unable to get CGSize for window size");
     }
 
     CFRelease(size_wrapper);
     return result;
 }
 
-void window_set_size(AXUIElementRef widnow, CGSize size) {
+void window_set_size(AXUIElementRef window, CGSize size)
+{
     AXValueRef size_wrapper = AXValueCreate(kAXValueCGSizeType, &size);
-    AXUIElementSetAttributeValue(widnow, kAXSizeAttribute, size_wrapper);
+    AXUIElementSetAttributeValue(window, kAXSizeAttribute, size_wrapper);
     CFRelease(size_wrapper);
 }

@@ -20,96 +20,78 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <Foundation/Foundation.h>
 #include "config.hpp"
+#include "metamove.hpp"
 #include "window_event_tap.hpp"
-
-void suicide_callback(CFNotificationCenterRef, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
-    NSDictionary *data = (NSDictionary *)userInfo;
-    NSLog(@"Received suicide notification from sender '%@' for reason '%@'",
-        [data objectForKey: @"sender"],
-        [data objectForKey: @"reason"]);
-    CFRunLoopStop(CFRunLoopGetMain());
-}
-
-void status_callback(CFNotificationCenterRef notification_center, void *, CFStringRef, const void *, CFDictionaryRef userInfo) {
-    NSDictionary *data = (NSDictionary *)userInfo;
-    NSLog(@"Received status query from sender '%@'", [data objectForKey: @"sender"]);
-    CFNotificationCenterPostNotification(
-        notification_center,
-        NOTIFICATION_ALIVE,
-        NOTIFICATION_OBJECT,
-        (CFDictionaryRef)@{@"version" : @VERSION_STRING},
-        true);
-}
 
 extern Boolean AXIsProcessTrustedWithOptions(CFDictionaryRef options) __attribute__((weak_import));
 extern CFStringRef kAXTrustedCheckOptionPrompt __attribute__((weak_import));
 
-int main(int, const char *[]) {
-    if (AXIsProcessTrustedWithOptions && kAXTrustedCheckOptionPrompt) {
-        AXIsProcessTrustedWithOptions((CFDictionaryRef) @{
-            (NSString *) kAXTrustedCheckOptionPrompt : (NSNumber *)kCFBooleanTrue
-        });
+static bool metamove_enabled = true;
+static MoveWindowEventTap *move_window_event_tap;
+static ResizeWindowEventTap *resize_window_event_tap;
+
+static CGEventMask get_mouse_mask(config_mouse_button button)
+{
+    if (!metamove_is_enabled()) {
+        return 0;
     }
 
-    CFNotificationCenterRef notification_center = CFNotificationCenterGetDistributedCenter();
-    CFNotificationCenterAddObserver(
-        notification_center,
-        nullptr,
-        suicide_callback,
-        NOTIFICATION_SUICIDE,
-        NOTIFICATION_OBJECT,
-        CFNotificationSuspensionBehaviorDeliverImmediately);
-    CFNotificationCenterAddObserver(
-        notification_center,
-        nullptr,
-        status_callback,
-        NOTIFICATION_STATUS,
-        NOTIFICATION_OBJECT,
-        CFNotificationSuspensionBehaviorDeliverImmediately);
-
-    CGEventMask left_mouse_mask =
+    constexpr CGEventMask left_mouse_mask =
         CGEventMaskBit(kCGEventLeftMouseDown) |
         CGEventMaskBit(kCGEventLeftMouseDragged) |
         CGEventMaskBit(kCGEventLeftMouseUp);
-    CGEventMask right_mouse_mask =
+    constexpr CGEventMask right_mouse_mask =
         CGEventMaskBit(kCGEventRightMouseDown) |
         CGEventMaskBit(kCGEventRightMouseDragged) |
         CGEventMaskBit(kCGEventRightMouseUp);
 
-    CGEventMask move_mask, resize_mask;
-
-    switch (get_move_button()) {
+    switch (button) {
         case config_mouse_button::left:
-            move_mask = left_mouse_mask;
-            break;
+            return left_mouse_mask;
         case config_mouse_button::right:
-            move_mask = right_mouse_mask;
-            break;
+            return right_mouse_mask;
         default:
-            move_mask = 0;
+            return 0;
+    }
+}
+
+bool metamove_is_enabled(void)
+{
+    return metamove_enabled;
+}
+
+void metamove_set_enabled(bool enabled)
+{
+    metamove_enabled = enabled;
+}
+
+void metamove_start(void)
+{
+    if (AXIsProcessTrustedWithOptions && kAXTrustedCheckOptionPrompt) {
+        AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef) @{
+            (__bridge NSString *) kAXTrustedCheckOptionPrompt : (NSNumber *)kCFBooleanTrue
+        });
     }
 
-    switch (get_resize_button()) {
-        case config_mouse_button::left:
-            resize_mask = left_mouse_mask;
-            break;
-        case config_mouse_button::right:
-            resize_mask = right_mouse_mask;
-            break;
-        default:
-            resize_mask = 0;
-    }
-
-    MoveWindowEventTap move_window_event_tap(
-        move_mask,
-        get_move_modifiers(),
-        true);
-    ResizeWindowEventTap resize_window_event_tap(
-        resize_mask,
-        get_resize_modifiers(),
-        true);
+    move_window_event_tap =
+        new MoveWindowEventTap(
+            get_mouse_mask(get_move_button()),
+            get_move_modifiers(),
+            true);
+    resize_window_event_tap =
+        new ResizeWindowEventTap(
+            get_mouse_mask(get_resize_button()),
+            get_resize_modifiers(),
+            true);
 
     NSLog(@"metamove v%s successfully initialized.", VERSION_STRING);
-    CFRunLoopRun();
-    return 0;
+}
+
+void metamove_reconfigure(void)
+{
+    move_window_event_tap->set_event_mask(get_mouse_mask(get_move_button()));
+    move_window_event_tap->set_modifiers(get_move_modifiers());
+
+    resize_window_event_tap->set_event_mask(get_mouse_mask(get_resize_button()));
+    resize_window_event_tap->set_modifiers(get_resize_modifiers());
 }

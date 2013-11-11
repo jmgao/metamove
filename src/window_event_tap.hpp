@@ -39,6 +39,8 @@ public:
         CGEventFlags modifiers,
         bool raise_window_on_action);
 
+    void set_modifiers(CGEventFlags modifiers);
+
 protected:
     void worker_thread_perform(void);
 

@@ -23,26 +23,46 @@
 #include "event_tap.hpp"
 #include "window_event_tap.hpp"
 
-EventTap::EventTap(int64_t event_mask) {
+EventTap::EventTap(int64_t event_mask) :
+    event_mask(event_mask)
+{
+    create_event_tap();
+}
+
+EventTap::~EventTap(void)
+{
+    CFRunLoopSourceInvalidate(this->run_loop_source);
+    CFRelease(this->run_loop_source);
+    CFRelease(this->event_tap);
+}
+
+void EventTap::set_event_mask(int64_t event_mask)
+{
+    this->event_mask = event_mask;
+}
+
+void EventTap::create_event_tap(void)
+{
+    if (this->event_tap) {
+        CFRunLoopSourceInvalidate(this->run_loop_source);
+        CFRelease(this->run_loop_source);
+        CFRelease(this->event_tap);
+    }
+
     this->event_tap =
         CGEventTapCreate(
             kCGSessionEventTap,
             kCGTailAppendEventTap,
             kCGEventTapOptionDefault,
-            event_mask,
+            this->event_mask,
             cg_event_callback,
             this);
     this->run_loop_source = CFMachPortCreateRunLoopSource(nullptr, this->event_tap, 0);
     CFRunLoopAddSource(CFRunLoopGetMain(), this->run_loop_source, kCFRunLoopCommonModes);
 }
 
-EventTap::~EventTap(void) {
-    CFRunLoopSourceInvalidate(this->run_loop_source);
-    CFRelease(this->run_loop_source);
-    CFRelease(this->event_tap);
-}
-
-CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data) {
+CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data)
+{
     auto event_tap = static_cast<EventTap *>(data);
     bool consume_event = false;
     CGPoint location = CGEventGetLocation(event);

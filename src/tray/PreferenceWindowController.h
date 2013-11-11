@@ -19,12 +19,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
-@interface PreferencePaneView : NSView
-
-@property (strong) IBOutlet NSSegmentedCell *startStopButton;
+@interface PreferenceWindowController : NSWindowController
 
 @property (strong) IBOutlet NSMatrix *moveRadioButtons;
 @property (strong) IBOutlet NSButton *moveModifierControlButton;
@@ -41,22 +38,17 @@
 @property (strong) IBOutlet NSTextField *versionLabel;
 @property (strong) IBOutlet NSTextField *urlLabel;
 
-- (void)
-viewWillMoveToWindow:
-    (NSWindow *) newWindow;
++ (PreferenceWindowController *)
+shared;
 
 - (void)
-updateStatus;
+windowDidLoad;
 
 - (void)
 loadSettings;
 
 - (void)
 saveSettings;
-
-- (IBAction)
-startStopButtonClicked:
-(id) sender;
 
 - (IBAction)
 configButtonClicked:

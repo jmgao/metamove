@@ -28,10 +28,15 @@ WindowEventTap::WindowEventTap(int64_t event_mask, CGEventFlags modifiers, bool 
     delta(0),
     completed(false)
 {
-
 }
 
-void WindowEventTap::worker_thread_perform(void) {
+void WindowEventTap::set_modifiers(CGEventFlags modifiers)
+{
+    this->modifiers = modifiers;
+}
+
+void WindowEventTap::worker_thread_perform(void)
+{
     int64_t delta;
     while ((delta = this->delta.exchange(0)) != 0 || !this->completed) {
         auto start = std::chrono::high_resolution_clock::now();
@@ -52,7 +57,8 @@ void WindowEventTap::worker_thread_perform(void) {
 
 }
 
-bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) {
+bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
+{
     CGEventFlags flags = CGEventGetFlags(event);
     if ((flags & this->modifiers) != this->modifiers) {
         return false;
@@ -93,7 +99,8 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
     return true;
 }
 
-bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) {
+bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y)
+{
     if (!this->window) {
         return false;
     }
@@ -110,7 +117,8 @@ bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEv
     return true;
 }
 
-bool WindowEventTap::on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event) {
+bool WindowEventTap::on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
+{
     if (!this->window) {
         return false;
     }
@@ -132,14 +140,16 @@ MoveWindowEventTap::MoveWindowEventTap(int64_t event_mask, CGEventFlags modifier
 {
 }
 
-bool MoveWindowEventTap::on_drag_start(void) {
+bool MoveWindowEventTap::on_drag_start(void)
+{
     assert(this->window);
     assert(!this->window_position.x && !this->window_position.y);
     this->window_position = window_get_position(window);
     return true;
 }
 
-void MoveWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y) {
+void MoveWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y)
+{
     assert(window);
     this->window_position.x += delta_x;
     this->window_position.y += delta_y;
@@ -155,21 +165,24 @@ ResizeWindowEventTap::ResizeWindowEventTap(int64_t event_mask, CGEventFlags modi
 {
 }
 
-bool ResizeWindowEventTap::on_drag_start(void) {
+bool ResizeWindowEventTap::on_drag_start(void)
+{
     assert(window);
     assert(!this->window_size.width && !this->window_size.height);
     this->window_size = window_get_size(window);
     return true;
 }
 
-void ResizeWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y) {
+void ResizeWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y)
+{
     assert(window);
     this->window_size.width += delta_x;
     this->window_size.height += delta_y;
     window_set_size(window, this->window_size);
 }
 
-void ResizeWindowEventTap::on_drag_end(void) {
+void ResizeWindowEventTap::on_drag_end(void)
+{
     this->window_size = { 0, 0 };
 }
 

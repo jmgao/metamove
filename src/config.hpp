@@ -22,17 +22,12 @@
 #include <ApplicationServices/ApplicationServices.h>
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 2
-#define VERSION_PATCH 1
+#define VERSION_MINOR 3
+#define VERSION_PATCH 0
 
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 #define VERSION_STRING STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." STRINGIFY(VERSION_PATCH)
-
-#define NOTIFICATION_OBJECT     CFSTR("us.insolit.metamove")
-#define NOTIFICATION_SUICIDE    CFSTR("us.insolit.metamove.suicide")
-#define NOTIFICATION_STATUS     CFSTR("us.insolit.metamove.status")
-#define NOTIFICATION_ALIVE      CFSTR("us.insolit.metamove.alive")
 
 enum class config_mouse_button {
     unknown = 0,

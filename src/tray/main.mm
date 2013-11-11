@@ -17,12 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#import "metamove_prefPane.hh"
+#import <Cocoa/Cocoa.h>
 
-@implementation metamove_prefPane
-
-- (void)mainViewDidLoad
-{
+int main(int argc, const char *argv[]) {
+    return NSApplicationMain(argc, argv);
 }
-
-@end

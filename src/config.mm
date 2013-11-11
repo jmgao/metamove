@@ -28,7 +28,8 @@ static CFStringRef move_modifiers_key = CFSTR("move_modifiers");
 static CFStringRef resize_modifiers_key = CFSTR("resize_modifiers");
 static CFStringRef raise_window_key = CFSTR("resize_modifiers");
 
-config_mouse_button get_button(CFStringRef key) {
+config_mouse_button get_button(CFStringRef key)
+{
     Boolean key_exists = false;
     CFIndex result = CFPreferencesGetAppIntegerValue(key, application_id, &key_exists);
 
@@ -50,24 +51,28 @@ config_mouse_button get_button(CFStringRef key) {
     return config_mouse_button::unknown;
 }
 
-void set_button(CFStringRef key, config_mouse_button button) {
+void set_button(CFStringRef key, config_mouse_button button)
+{
     CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &button);
     CFPreferencesSetAppValue(key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
     CFRelease(value);
 }
 
-config_mouse_button get_move_button(void) {
+config_mouse_button get_move_button(void)
+{
     config_mouse_button result = get_button(move_button_key);
     return result != config_mouse_button::unknown ? result : config_mouse_button::disabled;
 }
 
-config_mouse_button get_resize_button(void) {
+config_mouse_button get_resize_button(void)
+{
     config_mouse_button result = get_button(resize_button_key);
     return result != config_mouse_button::unknown ? result : config_mouse_button::disabled;
 }
 
-void set_move_button(config_mouse_button button) {
+void set_move_button(config_mouse_button button)
+{
     set_button(move_button_key, button);
 }
 
@@ -75,14 +80,16 @@ void set_resize_button(config_mouse_button button) {
     set_button(resize_button_key, button);
 }
 
-CGEventMask get_move_modifiers(void) {
+CGEventMask get_move_modifiers(void)
+{
     Boolean key_exists = false;
     CFIndex result = CFPreferencesGetAppIntegerValue(move_modifiers_key, application_id, &key_exists);
 
     return key_exists ? result : kCGEventFlagMaskCommand | kCGEventFlagMaskShift;
 }
 
-CGEventMask get_resize_modifiers(void) {
+CGEventMask get_resize_modifiers(void)
+{
     Boolean key_exists = false;
     CFIndex result = CFPreferencesGetAppIntegerValue(resize_modifiers_key, application_id, &key_exists);
 

@@ -1,5 +1,3 @@
-#pragma once
-
 /*
  * metamove - XFree86 window movement for OS X
  * Copyright (C) 2013 jmgao
@@ -19,10 +17,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#import <PreferencePanes/PreferencePanes.h>
+#include <CoreFoundation/CoreFoundation.h>
+#include "metamove.hpp"
 
-@interface metamove_prefPane : NSPreferencePane
-
-- (void)mainViewDidLoad;
-
-@end
+int main(int, const char *[]) {
+    metamove_start();
+    CFRunLoopRun();
+}

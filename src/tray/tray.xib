@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A3017" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
+            <connections>
+                <outlet property="delegate" destination="s2C-W5-x8h" id="xce-cc-2XX"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <customObject id="s2C-W5-x8h" customClass="MetamoveTrayDelegate">
+            <connections>
+                <outlet property="menu" destination="bVC-Yt-8Kt" id="tGx-Ou-kjs"/>
+                <outlet property="menuEnabledText" destination="Tee-Tg-UTb" id="p3f-Xp-ced"/>
+                <outlet property="menuToggleEnabled" destination="i7A-UO-ZHT" id="miZ-Od-SJz"/>
+            </connections>
+        </customObject>
+        <customObject id="371" customClass="NSFontManager"/>
+        <menu id="bVC-Yt-8Kt">
+            <items>
+                <menuItem title="metamove: On" id="Tee-Tg-UTb">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Disable" id="i7A-UO-ZHT">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="onMenuItemToggleEnabledClicked:" target="s2C-W5-x8h" id="gvu-lQ-4XK"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="ATM-of-pJX"/>
+                <menuItem title="Configure" id="sKb-Ls-jZe">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="onMenuItemConfigureClicked:" target="s2C-W5-x8h" id="bu8-oA-CF2"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Exit" id="OGk-wp-ybs">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="onMenuItemExitClicked:" target="s2C-W5-x8h" id="AEt-Cx-Hnl"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+    </objects>
+</document>

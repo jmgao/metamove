@@ -25,18 +25,23 @@
 
 class EventTap {
 protected:
+    int64_t event_mask;
     CGPoint last_mouse_position;
-    CFMachPortRef event_tap;
-    CFRunLoopSourceRef run_loop_source;
+    CFMachPortRef event_tap = nullptr;
+    CFRunLoopSourceRef run_loop_source = nullptr;
 
 public:
     explicit EventTap(int64_t event_mask);
 
     virtual ~EventTap(void);
 
+    void set_event_mask(int64_t event_mask);
+
     static CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data);
 
 protected:
+    void create_event_tap(void);
+
     virtual bool on_left_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) {
         return on_mouse_down(proxy, type, event);
     }

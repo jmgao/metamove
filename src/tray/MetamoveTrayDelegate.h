@@ -19,32 +19,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-@interface launchd_manager : NSObject
+@interface MetamoveTrayDelegate : NSObject <NSApplicationDelegate>
 
-+ (NSString *)
-bundleLaunchdPlistPath;
+@property (assign) IBOutlet NSMenu *menu;
+@property (assign) IBOutlet NSMenuItem *menuToggleEnabled;
+@property (assign) IBOutlet NSMenuItem *menuEnabledText;
+@property (assign) IBOutlet NSWindow *window;
+@property (retain) NSStatusItem *statusItem;
 
-+ (NSString *)
-installedLaunchdPlistPath;
-
-+ (bool)
-isInstalled;
-
-+ (void)
-install;
-
-+ (void)
-uninstall;
-
-+ (bool)
-isRunning;
-
-+ (void)
-start;
-
-+ (void)
-stop;
+- (IBAction)
+onMenuItemConfigureClicked:
+    (id) sender;
 
 @end
