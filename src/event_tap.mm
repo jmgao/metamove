@@ -26,7 +26,16 @@
 EventTap::EventTap(int64_t event_mask) :
     event_mask(event_mask)
 {
-    create_event_tap();
+    this->event_tap =
+        CGEventTapCreate(
+            kCGSessionEventTap,
+            kCGTailAppendEventTap,
+            kCGEventTapOptionDefault,
+            kCGEventMaskForAllEvents,
+            cg_event_callback,
+            this);
+    this->run_loop_source = CFMachPortCreateRunLoopSource(nullptr, this->event_tap, 0);
+    CFRunLoopAddSource(CFRunLoopGetMain(), this->run_loop_source, kCFRunLoopCommonModes);
 }
 
 EventTap::~EventTap(void)
@@ -41,29 +50,15 @@ void EventTap::set_event_mask(int64_t event_mask)
     this->event_mask = event_mask;
 }
 
-void EventTap::create_event_tap(void)
-{
-    if (this->event_tap) {
-        CFRunLoopSourceInvalidate(this->run_loop_source);
-        CFRelease(this->run_loop_source);
-        CFRelease(this->event_tap);
-    }
-
-    this->event_tap =
-        CGEventTapCreate(
-            kCGSessionEventTap,
-            kCGTailAppendEventTap,
-            kCGEventTapOptionDefault,
-            this->event_mask,
-            cg_event_callback,
-            this);
-    this->run_loop_source = CFMachPortCreateRunLoopSource(nullptr, this->event_tap, 0);
-    CFRunLoopAddSource(CFRunLoopGetMain(), this->run_loop_source, kCFRunLoopCommonModes);
-}
-
 CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data)
 {
     auto event_tap = static_cast<EventTap *>(data);
+
+    CGEventMask event_type_mask = CGEventMaskBit(type);
+    if (event_type_mask == 0 || (event_type_mask & event_tap->event_mask) != event_type_mask) {
+        return event;
+    }
+
     bool consume_event = false;
     CGPoint location = CGEventGetLocation(event);
     int64_t delta_x = location.x - event_tap->last_mouse_position.x,

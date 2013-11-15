@@ -40,8 +40,6 @@ public:
     static CGEventRef cg_event_callback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *data);
 
 protected:
-    void create_event_tap(void);
-
     virtual bool on_left_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) {
         return on_mouse_down(proxy, type, event);
     }
