@@ -79,6 +79,7 @@
 		03C15EBC183776E6001233F2 /* tray_icon_enabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tray_icon_enabled.png; path = src/tray/icons/tray_icon_enabled.png; sourceTree = SOURCE_ROOT; };
 		03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tray_icon_enabled@2x.png"; path = "src/tray/icons/tray_icon_enabled@2x.png"; sourceTree = SOURCE_ROOT; };
 		03C15ED218377884001233F2 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = src/tray/icons/icon.icns; sourceTree = SOURCE_ROOT; };
+		03C15ED5183785CF001233F2 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = SOURCE_ROOT; };
 		03EF62D11834941F007187FA /* PreferenceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferenceWindowController.h; path = src/tray/PreferenceWindowController.h; sourceTree = SOURCE_ROOT; };
 		03EF62D21834941F007187FA /* PreferenceWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferenceWindowController.mm; path = src/tray/PreferenceWindowController.mm; sourceTree = SOURCE_ROOT; };
 		03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextFieldClickable.mm; path = src/tray/NSTextFieldClickable.mm; sourceTree = SOURCE_ROOT; };
@@ -188,6 +189,7 @@
 			children = (
 				037309D2183401F6002AFE3B /* cli */,
 				03730A0318342461002AFE3B /* tray */,
+				03C15ED5183785CF001233F2 /* config.h */,
 				03B7775F18131F2A0088D6DE /* config.hpp */,
 				03B7776018131F2A0088D6DE /* config.mm */,
 				03B7776118131F2A0088D6DE /* event_tap.hpp */,
@@ -337,7 +339,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -350,6 +353,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				INFOPLIST_PREFIX_HEADER = src/config.h;
+				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -380,7 +385,8 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -388,6 +394,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				INFOPLIST_PREFIX_HEADER = src/config.h;
+				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
