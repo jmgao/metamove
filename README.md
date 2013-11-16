@@ -3,7 +3,7 @@
 A utility for emulating XFree86-style Meta+click and drag window movement. The default bindings are Cmd-Shift-Click for window movement, and Option-Shift-Click for window resizing.
 
 ## Install
-* Get the [latest release](https://github.com/jmgao/metamove/releases/tag/v0.3.0) and install it as a normal OS X application.
+* Get the [latest release](https://github.com/jmgao/metamove/releases/latest) and install it as a normal OS X application.
 * Use the tray menu to configure your bindings.
 
 ## Copying
