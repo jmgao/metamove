@@ -64,9 +64,12 @@ CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, 
     int64_t delta_x = location.x - event_tap->last_mouse_position.x,
             delta_y = location.y - event_tap->last_mouse_position.y;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (!(AXAPIEnabled() || AXIsProcessTrusted())) {
         return event;
     }
+#pragma clang diagnostic pop
 
     switch (type) {
         case kCGEventLeftMouseDown:
