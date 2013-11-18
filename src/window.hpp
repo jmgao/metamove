@@ -31,3 +31,5 @@ void window_set_position(AXUIElementRef window, CGPoint position);
 
 CGSize window_get_size(AXUIElementRef window);
 void window_set_size(AXUIElementRef window, CGSize size);
+
+void window_raise(AXUIElementRef window);

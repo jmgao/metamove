@@ -75,16 +75,9 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
     }
 
     CGEventSetFlags(event, flags | kCGEventFlagMaskNonCoalesced);
+
     if (this->raise_window_on_action) {
-        AXUIElementRef application = window_copy_application(this->window);
-
-        if (application) {
-            // This brings every window of the application to the front, which kinda sucks.
-            //AXUIElementSetAttributeValue(application, kAXFrontmostAttribute, kCFBooleanTrue);
-            CFRelease(application);
-        }
-
-        AXUIElementPerformAction(this->window, kAXRaiseAction);
+        window_raise(this->window);
     }
 
     assert(!this->worker_thread.joinable() && "Worker thread is still running");

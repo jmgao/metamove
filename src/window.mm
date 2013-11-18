@@ -220,3 +220,31 @@ void window_set_size(AXUIElementRef window, CGSize size)
     AXUIElementSetAttributeValue(window, kAXSizeAttribute, size_wrapper);
     CFRelease(size_wrapper);
 }
+
+void window_raise(AXUIElementRef window) {
+    // With thanks to http://stackoverflow.com/a/6784991/341371
+    if (AXUIElementPerformAction(window, kAXRaiseAction) != kAXErrorSuccess) {
+        NSLog(@"Unable to raise window");
+        return;
+    }
+
+    pid_t window_pid = 0;
+    if (AXUIElementGetPid(window, &window_pid) != kAXErrorSuccess) {
+        NSLog(@"Unable to get PID for window");
+        return;
+    }
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    ProcessSerialNumber window_process;
+    if (GetProcessForPID(window_pid, &window_process) != 0) {
+        NSLog(@"Unable to get process for window PID");
+        return;
+    }
+
+    if (SetFrontProcessWithOptions(&window_process, kSetFrontProcessFrontWindowOnly) != 0) {
+        NSLog(@"Unable to set front process");
+        return;
+    }
+    #pragma clang diagnostic pop
+}
