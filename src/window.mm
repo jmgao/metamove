@@ -22,35 +22,129 @@
 #include <Foundation/Foundation.h>
 #include "window.hpp"
 
+extern "C" AXError _AXUIElementGetWindow(AXUIElementRef, CGWindowID* out) __attribute__((weak_import));;
+
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 
 AXUIElementRef window_get_from_point(CGPoint point)
 {
     AXUIElementRef element = nullptr;
     CFStringRef element_role = nullptr;
+    AXUIElementRef window_owner = nullptr;
 
-    if (AXUIElementCopyElementAtPosition(accessibility_object, point.x, point.y, &element) != kAXErrorSuccess) {
-        NSLog(@"Failed to find element at (%f, %f)\n", point.x, point.y);
-        goto abort;
-    }
+    // Naive method, fails for Console's message pane
+    if (AXUIElementCopyElementAtPosition(accessibility_object, point.x, point.y, &element) == kAXErrorSuccess) {
+        AXUIElementCopyAttributeValue(element, kAXRoleAttribute, (CFTypeRef *)&element_role);
+        if (CFStringCompare(kAXWindowRole, element_role, 0) != kCFCompareEqualTo) {
+            AXUIElementRef window = nullptr;
 
-    AXUIElementCopyAttributeValue(element, kAXRoleAttribute, (CFTypeRef *)&element_role);
-    if (CFStringCompare(kAXWindowRole, element_role, 0) != kCFCompareEqualTo) {
-        AXUIElementRef window = nullptr;
-
-        if (AXUIElementCopyAttributeValue(element, kAXWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess) {
-            NSLog(@"Failed to copy window for element at (%f, %f)\n", point.x, point.y);
-            goto abort;
-        } else {
-            if (element != window) {
-                CFRelease(element);
-                element = window;
+            if (AXUIElementCopyAttributeValue(element, kAXWindowAttribute, (CFTypeRef *)&window) == kAXErrorSuccess) {
+                if (element != window) {
+                    CFRelease(element);
+                    element = window;
+                }
+                goto exit;
             }
         }
     }
 
-abort:
+    // Fallback method, find the topmost window that contains the cursor
+    {
+        NSDictionary *selected_window = nullptr;
+        NSArray *window_list = (__bridge_transfer NSArray *) CGWindowListCopyWindowInfo(
+            kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements,
+            kCGNullWindowID);
+        NSRect window_bounds = NSZeroRect;
+
+        for (NSDictionary *current_window in window_list) {
+            NSDictionary *window_bounds_dict = current_window[(NSString *) kCGWindowBounds];
+
+            if (![current_window[(id)kCGWindowLayer] isEqual: @0]) {
+                continue;
+            }
+
+            int x = [window_bounds_dict[@"X"] intValue];
+            int y = [window_bounds_dict[@"Y"] intValue];
+            int width = [window_bounds_dict[@"Width"] intValue];
+            int height = [window_bounds_dict[@"Height"] intValue];
+            NSRect current_window_bounds = NSMakeRect(x, y, width, height);
+            if (NSPointInRect(NSPointFromCGPoint(point), current_window_bounds)) {
+                window_bounds = current_window_bounds;
+                selected_window = current_window;
+                break;
+            }
+        }
+
+        if (!selected_window) {
+            NSLog(@"Unable to find window under cursor");
+            goto exit;
+        }
+
+        // Find the AXUIElement corresponding to the window via its application
+        {
+            int window_owner_pid = [selected_window[(id)kCGWindowOwnerPID] intValue];
+            window_owner = AXUIElementCreateApplication(window_owner_pid);
+            CFTypeRef windows_cf = nullptr;
+            AXUIElementCopyAttributeValue(window_owner, kAXWindowsAttribute, &windows_cf);
+            NSArray *application_windows = (__bridge_transfer NSArray *) windows_cf;
+
+            if (!selected_window) {
+                NSLog(@"Failed to find window under cursor");
+                goto exit;
+            }
+
+            // Use a private symbol to get the CGWindowID from the application's windows
+            if (_AXUIElementGetWindow) {
+                CGWindowID selected_window_id = [selected_window[(id)kCGWindowNumber] intValue];
+
+                if (!selected_window_id) {
+                    NSLog(@"Unable to get window ID for selected window");
+                    goto exit;
+                }
+
+                for (id application_window in application_windows) {
+                    AXUIElementRef application_window_ax = (__bridge AXUIElementRef)application_window;
+                    CGWindowID application_window_id = 0;
+
+                    if (_AXUIElementGetWindow(application_window_ax, &application_window_id) != kAXErrorSuccess) {
+                        NSLog(@"Unable to get window id from AXUIElement");
+                        continue;
+                    }
+
+                    if (application_window_id == selected_window_id) {
+                        element = application_window_ax;
+                        CFRetain(element);
+                        goto exit;
+                    }
+                }
+            } else {
+                NSLog(@"Unable to use _AXUIElementGetWindow, falling back to window bounds comparison");
+
+                for (id application_window in application_windows) {
+                    AXUIElementRef application_window_ax = (__bridge AXUIElementRef)application_window;
+                    CGPoint application_window_position = window_get_position(application_window_ax);
+                    CGSize application_window_size = window_get_size(application_window_ax);
+
+                    NSRect application_window_bounds =
+                        NSMakeRect(
+                            application_window_position.x,
+                            application_window_position.y,
+                            application_window_size.width,
+                            application_window_size.height);
+
+                    if (NSEqualRects(application_window_bounds, window_bounds)) {
+                        element = application_window_ax;
+                        CFRetain(element);
+                        goto exit;
+                    }
+                }
+            }
+        }
+    }
+
+exit:
     if (element_role) CFRelease(element_role);
+    if (window_owner) CFRelease(window_owner);
     return element;
 }
 
