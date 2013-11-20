@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>metamove changelog</title>
+      <link>http://jmgao.github.io/metamove/sparkle.xml</link>
+      <description>Most recent changes with links to updates.</description>
+      <language>en</language>
+         <item>
+            <title>version 0.3.3 (added updater, bug fixed)</title>
+            <pubDate>Tue, 19 Nov 2013 23:13:05 -0800</pubDate>
+            <sparkle:releaseNotesLink>http://jmgao.github.io/metamove/sparkle/0.3.3.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/jmgao/metamove/releases/download/v0.3.3/metamove-0.3.3.zip" sparkle:version="0.3.3" length="480280" type="application/octet-stream" />
+         </item>
+   </channel>
+</rss>
