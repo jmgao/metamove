@@ -30,6 +30,8 @@
 		03C15ECA183776E6001233F2 /* tray_icon_enabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBC183776E6001233F2 /* tray_icon_enabled.png */; };
 		03C15ECB183776E6001233F2 /* tray_icon_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */; };
 		03C15ED318377884001233F2 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03C15ED218377884001233F2 /* icon.icns */; };
+		03C5903D183C55CC008D35EB /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03C59039183C51EC008D35EB /* Sparkle.framework */; };
+		03C5903E183C5613008D35EB /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C59039183C51EC008D35EB /* Sparkle.framework */; };
 		03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D21834941F007187FA /* PreferenceWindowController.mm */; };
 		03EF62D6183496FC007187FA /* NSTextFieldClickable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */; };
 /* End PBXBuildFile section */
@@ -43,6 +45,16 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		03C5903C183C55BB008D35EB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				03C5903D183C55CC008D35EB /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -80,6 +92,7 @@
 		03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tray_icon_enabled@2x.png"; path = "src/tray/icons/tray_icon_enabled@2x.png"; sourceTree = SOURCE_ROOT; };
 		03C15ED218377884001233F2 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = src/tray/icons/icon.icns; sourceTree = SOURCE_ROOT; };
 		03C15ED5183785CF001233F2 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = SOURCE_ROOT; };
+		03C59039183C51EC008D35EB /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = lib/Sparkle.framework; sourceTree = "<group>"; };
 		03EF62D11834941F007187FA /* PreferenceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferenceWindowController.h; path = src/tray/PreferenceWindowController.h; sourceTree = SOURCE_ROOT; };
 		03EF62D21834941F007187FA /* PreferenceWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferenceWindowController.mm; path = src/tray/PreferenceWindowController.mm; sourceTree = SOURCE_ROOT; };
 		03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextFieldClickable.mm; path = src/tray/NSTextFieldClickable.mm; sourceTree = SOURCE_ROOT; };
@@ -91,6 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				037309E918342406002AFE3B /* Cocoa.framework in Frameworks */,
+				03C5903E183C5613008D35EB /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +178,7 @@
 		03A3ED1E18051A950062A9F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03C59039183C51EC008D35EB /* Sparkle.framework */,
 				03A3ED47180520770062A9F0 /* CoreFoundation.framework */,
 				03A3ED4518051E2A0062A9F0 /* ApplicationServices.framework */,
 				03A3ED1F18051A960062A9F0 /* Cocoa.framework */,
@@ -214,6 +229,7 @@
 				037309E418342406002AFE3B /* Sources */,
 				037309E518342406002AFE3B /* Frameworks */,
 				037309E618342406002AFE3B /* Resources */,
+				03C5903C183C55BB008D35EB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -342,6 +358,10 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/josh/metamove/lib,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -360,10 +380,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
 				INFOPLIST_PREFIX_HEADER = src/config.h;
 				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
@@ -393,6 +415,10 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/josh/metamove/lib,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -404,9 +430,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "src/tray/metamove-Info.plist";
+				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
 				INFOPLIST_PREFIX_HEADER = src/config.h;
 				INFOPLIST_PREPROCESS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;

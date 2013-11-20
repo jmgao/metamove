@@ -20,6 +20,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
 
 @interface MetamoveTrayDelegate : NSObject <NSApplicationDelegate>
 
@@ -28,9 +29,18 @@
 @property (assign) IBOutlet NSMenuItem *menuEnabledText;
 @property (assign) IBOutlet NSWindow *window;
 @property (retain) NSStatusItem *statusItem;
+@property (retain) SUUpdater *updater;
 
 - (IBAction)
 onMenuItemConfigureClicked:
+    (id) sender;
+
+- (IBAction)
+onMenuItemCheckForUpdatesClicked:
+    (id) sender;
+
+- (IBAction)
+onMenuItemExitClicked:
     (id) sender;
 
 @end

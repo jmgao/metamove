@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A3017" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -35,6 +36,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="onMenuItemConfigureClicked:" target="s2C-W5-x8h" id="bu8-oA-CF2"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Check for updates" id="NZG-ji-tEN">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="onMenuItemCheckForUpdatesClicked:" target="s2C-W5-x8h" id="rRr-Ja-Wxj"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Exit" id="OGk-wp-ybs">
