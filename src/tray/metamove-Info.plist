@@ -34,5 +34,9 @@
 	<string>tray</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>http://jmgao.github.io/metamove/sparkle.xml</string>
 </dict>
 </plist>

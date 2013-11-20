@@ -18,6 +18,7 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
 #import "metamove.hpp"
 #import "tray/MetamoveTrayDelegate.h"
 #import "tray/PreferenceWindowController.h"
@@ -32,6 +33,7 @@ static NSImage *statusImageDisabled = [NSImage imageNamed: @"tray_icon_disabled"
 @synthesize menuEnabledText;
 @synthesize window;
 @synthesize statusItem;
+@synthesize updater;
 
 - (void)
 applicationDidFinishLaunching:
@@ -48,6 +50,8 @@ awakeFromNib
     self.statusItem.menu = self.menu;
     self.statusItem.image = statusImageEnabled;
     self.statusItem.highlightMode = true;
+    
+    self.updater = [SUUpdater sharedUpdater];
 }
 
 - (IBAction)
@@ -75,6 +79,13 @@ onMenuItemToggleEnabledClicked:
         metamove_set_enabled(true);
     }
     metamove_reconfigure();
+}
+
+- (IBAction)
+onMenuItemCheckForUpdatesClicked:
+    (id) sender
+{
+    [self.updater checkForUpdates: sender];
 }
 
 - (IBAction)
