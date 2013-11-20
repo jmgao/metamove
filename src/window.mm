@@ -22,7 +22,7 @@
 #include <Foundation/Foundation.h>
 #include "window.hpp"
 
-extern "C" AXError _AXUIElementGetWindow(AXUIElementRef, CGWindowID* out) __attribute__((weak_import));;
+extern "C" AXError _AXUIElementGetWindow(AXUIElementRef, CGWindowID *out) __attribute__((weak_import));
 
 static AXUIElementRef accessibility_object = AXUIElementCreateSystemWide();
 
@@ -34,18 +34,23 @@ AXUIElementRef window_get_from_point(CGPoint point)
 
     // Naive method, fails for Console's message pane
     if (AXUIElementCopyElementAtPosition(accessibility_object, point.x, point.y, &element) == kAXErrorSuccess) {
-        AXUIElementCopyAttributeValue(element, kAXRoleAttribute, (CFTypeRef *)&element_role);
-        if (CFStringCompare(kAXWindowRole, element_role, 0) != kCFCompareEqualTo) {
-            AXUIElementRef window = nullptr;
+        if (AXUIElementCopyAttributeValue(element, kAXRoleAttribute, (CFTypeRef *)&element_role) == kAXErrorSuccess) {
+            if (CFStringCompare(kAXWindowRole, element_role, 0) != kCFCompareEqualTo) {
+                AXUIElementRef window = nullptr;
 
-            if (AXUIElementCopyAttributeValue(element, kAXWindowAttribute, (CFTypeRef *)&window) == kAXErrorSuccess) {
-                if (element != window) {
-                    CFRelease(element);
-                    element = window;
+                if (AXUIElementCopyAttributeValue(element, kAXWindowAttribute, (CFTypeRef *)&window) == kAXErrorSuccess) {
+                    if (element != window) {
+                        CFRelease(element);
+                        element = window;
+                    }
+                    goto exit;
                 }
-                goto exit;
             }
+        } else {
+            NSLog(@"Unable to copy role for element, using fallback method");
         }
+    } else {
+        NSLog(@"Unable to copy element at position (%f, %f), using fallback method", point.x, point.y);
     }
 
     // Fallback method, find the topmost window that contains the cursor
@@ -85,13 +90,14 @@ AXUIElementRef window_get_from_point(CGPoint point)
             int window_owner_pid = [selected_window[(id)kCGWindowOwnerPID] intValue];
             window_owner = AXUIElementCreateApplication(window_owner_pid);
             CFTypeRef windows_cf = nullptr;
-            AXUIElementCopyAttributeValue(window_owner, kAXWindowsAttribute, &windows_cf);
-            NSArray *application_windows = (__bridge_transfer NSArray *) windows_cf;
+            NSArray *application_windows = nullptr;
 
-            if (!selected_window) {
+            if (AXUIElementCopyAttributeValue(window_owner, kAXWindowsAttribute, &windows_cf) != kAXErrorSuccess) {
                 NSLog(@"Failed to find window under cursor");
                 goto exit;
             }
+
+            application_windows = (__bridge_transfer NSArray *) windows_cf;
 
             // Use a private symbol to get the CGWindowID from the application's windows
             if (_AXUIElementGetWindow) {
@@ -106,15 +112,14 @@ AXUIElementRef window_get_from_point(CGPoint point)
                     AXUIElementRef application_window_ax = (__bridge AXUIElementRef)application_window;
                     CGWindowID application_window_id = 0;
 
-                    if (_AXUIElementGetWindow(application_window_ax, &application_window_id) != kAXErrorSuccess) {
+                    if (_AXUIElementGetWindow(application_window_ax, &application_window_id) == kAXErrorSuccess) {
+                        if (application_window_id == selected_window_id) {
+                            element = application_window_ax;
+                            CFRetain(element);
+                            goto exit;
+                        }
+                    } else {
                         NSLog(@"Unable to get window id from AXUIElement");
-                        continue;
-                    }
-
-                    if (application_window_id == selected_window_id) {
-                        element = application_window_ax;
-                        CFRetain(element);
-                        goto exit;
                     }
                 }
             } else {
@@ -150,12 +155,16 @@ exit:
 
 AXUIElementRef window_copy_application(AXUIElementRef window)
 {
-    AXUIElementRef current;
+    AXUIElementRef current = nullptr;
     AXUIElementCopyAttributeValue(window, kAXParentAttribute, (CFTypeRef *)&current);
 
     while (current) {
-        CFStringRef role;
-        AXUIElementCopyAttributeValue(current, kAXRoleAttribute, (CFTypeRef *)&role);
+        CFStringRef role = nullptr;
+        if (AXUIElementCopyAttributeValue(current, kAXRoleAttribute, (CFTypeRef *)&role) != kAXErrorSuccess) {
+            NSLog(@"Unable to copy role for element, aborting");
+            current = nullptr;
+            break;
+        }
 
         if (CFStringCompare(role, kAXApplicationRole, 0) != 0) {
             AXUIElementRef last = current;
