@@ -54,6 +54,12 @@ CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, 
 {
     auto event_tap = static_cast<EventTap *>(data);
 
+    if (type == kCGEventTapDisabledByTimeout) {
+        NSLog(@"Event tap was disabled by timeout, reenabling\n");
+        CGEventTapEnable(event_tap->event_tap, true);
+        return event;
+    }
+
     CGEventMask event_type_mask = CGEventMaskBit(type);
     if (event_type_mask == 0 || (event_type_mask & event_tap->event_mask) != event_type_mask) {
         return event;
@@ -98,10 +104,6 @@ CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, 
 
         case kCGEventRightMouseUp:
             consume_event = event_tap->on_right_mouse_up(proxy, type, event);
-            break;
-
-        case kCGEventTapDisabledByTimeout:
-            NSLog(@"Event tap was disabled by timeout, aborting\n");
             break;
 
         default:

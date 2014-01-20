@@ -54,7 +54,6 @@ void WindowEventTap::worker_thread_perform(void)
             std::this_thread::sleep_for(desired_duration - actual_duration);
         }
     }
-
 }
 
 bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
