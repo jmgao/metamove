@@ -58,6 +58,10 @@ void WindowEventTap::worker_thread_perform(void)
 
 bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
 {
+    if (!modifiers) {
+        return false;
+    }
+
     CGEventFlags flags = CGEventGetFlags(event);
     if ((flags & this->modifiers) != this->modifiers) {
         return false;
