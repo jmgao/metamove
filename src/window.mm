@@ -56,9 +56,9 @@ AXUIElementRef window_get_from_point(CGPoint point)
     // Fallback method, find the topmost window that contains the cursor
     {
         NSDictionary *selected_window = nullptr;
-        NSArray *window_list = (__bridge_transfer NSArray *) CGWindowListCopyWindowInfo(
+        NSArray *window_list = [(NSArray *)CGWindowListCopyWindowInfo(
             kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements,
-            kCGNullWindowID);
+            kCGNullWindowID) autorelease];
         NSRect window_bounds = NSZeroRect;
 
         for (NSDictionary *current_window in window_list) {
@@ -97,7 +97,7 @@ AXUIElementRef window_get_from_point(CGPoint point)
                 goto exit;
             }
 
-            application_windows = (__bridge_transfer NSArray *) windows_cf;
+            application_windows = (NSArray *) windows_cf;
 
             // Use a private symbol to get the CGWindowID from the application's windows
             if (_AXUIElementGetWindow) {
