@@ -45,12 +45,15 @@ applicationDidFinishLaunching:
 - (void)
 awakeFromNib
 {
+    [statusImageEnabled setTemplate: true];
+    [statusImageDisabled setTemplate: true];
+
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
 
     self.statusItem.menu = self.menu;
     self.statusItem.image = statusImageEnabled;
     self.statusItem.highlightMode = true;
-    
+
     self.updater = [SUUpdater sharedUpdater];
 }
 
@@ -70,12 +73,28 @@ onMenuItemToggleEnabledClicked:
     if (metamove_is_enabled()) {
         self.menuEnabledText.title = @"Metamove: Off";
         self.menuToggleEnabled.title = @"Enable";
-        self.statusItem.image = statusImageDisabled;
+
+        if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9) {
+            // Mavericks or below
+            self.statusItem.image = statusImageDisabled;
+        } else {
+            // Yosemite
+            self.statusItem.button.appearsDisabled = true;
+        }
+
         metamove_set_enabled(false);
     } else {
         self.menuEnabledText.title = @"Metamove: On";
         self.menuToggleEnabled.title = @"Disable";
-        self.statusItem.image = statusImageEnabled;
+
+        if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_9) {
+            // Mavericks or below
+            self.statusItem.image = statusImageEnabled;
+        } else {
+            // Yosemite
+            self.statusItem.button.appearsDisabled = false;
+        }
+
         metamove_set_enabled(true);
     }
     metamove_reconfigure();
