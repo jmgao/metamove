@@ -6,6 +6,12 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>version 0.3.5 (bugfix)</title>
+            <pubDate>Mon, 20 Oct 2014 17:00:00 -0800</pubDate>
+            <sparkle:releaseNotesLink>http://jmgao.github.io/metamove/sparkle/0.3.5.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/jmgao/metamove/releases/download/v0.3.5/metamove-0.3.5.zip" sparkle:version="0.3.5" length="477907" type="application/octet-stream" />
+         </item>
+         <item>
             <title>version 0.3.4 (bugfix)</title>
             <pubDate>Sun, 19 Jan 2014 10:20:01 -0800</pubDate>
             <sparkle:releaseNotesLink>http://jmgao.github.io/metamove/sparkle/0.3.4.html</sparkle:releaseNotesLink>
