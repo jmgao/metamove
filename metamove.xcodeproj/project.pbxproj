@@ -32,6 +32,8 @@
 		03C15ECB183776E6001233F2 /* tray_icon_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */; };
 		03C15ED318377884001233F2 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03C15ED218377884001233F2 /* icon.icns */; };
 		03C5903D183C55CC008D35EB /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03C59039183C51EC008D35EB /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		03E440F91B4F2D1400BB2178 /* worker_thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E440F71B4F2D1400BB2178 /* worker_thread.mm */; };
+		03E440FA1B4F2D1400BB2178 /* worker_thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E440F71B4F2D1400BB2178 /* worker_thread.mm */; };
 		03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D21834941F007187FA /* PreferenceWindowController.mm */; };
 		03EF62D6183496FC007187FA /* NSTextFieldClickable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */; };
 /* End PBXBuildFile section */
@@ -92,6 +94,8 @@
 		03C15ED218377884001233F2 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = src/tray/icons/icon.icns; sourceTree = SOURCE_ROOT; };
 		03C15ED5183785CF001233F2 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = SOURCE_ROOT; };
 		03C59039183C51EC008D35EB /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = lib/Sparkle.framework; sourceTree = "<group>"; };
+		03E440F71B4F2D1400BB2178 /* worker_thread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = worker_thread.mm; path = src/worker_thread.mm; sourceTree = SOURCE_ROOT; };
+		03E440F81B4F2D1400BB2178 /* worker_thread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = worker_thread.hpp; path = src/worker_thread.hpp; sourceTree = SOURCE_ROOT; };
 		03EF62D11834941F007187FA /* PreferenceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferenceWindowController.h; path = src/tray/PreferenceWindowController.h; sourceTree = SOURCE_ROOT; };
 		03EF62D21834941F007187FA /* PreferenceWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PreferenceWindowController.mm; path = src/tray/PreferenceWindowController.mm; sourceTree = SOURCE_ROOT; };
 		03EF62D5183496FC007187FA /* NSTextFieldClickable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = NSTextFieldClickable.mm; path = src/tray/NSTextFieldClickable.mm; sourceTree = SOURCE_ROOT; };
@@ -213,6 +217,8 @@
 				03B7776D18131F2A0088D6DE /* window.mm */,
 				03B7776E18131F2A0088D6DE /* window_event_tap.hpp */,
 				03B7776F18131F2A0088D6DE /* window_event_tap.mm */,
+				03E440F81B4F2D1400BB2178 /* worker_thread.hpp */,
+				03E440F71B4F2D1400BB2178 /* worker_thread.mm */,
 			);
 			path = metamove;
 			sourceTree = "<group>";
@@ -318,6 +324,7 @@
 				03730A1618342650002AFE3B /* window.mm in Sources */,
 				03730A1718342650002AFE3B /* window_event_tap.mm in Sources */,
 				03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */,
+				03E440F91B4F2D1400BB2178 /* worker_thread.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				037309D418340200002AFE3B /* main.mm in Sources */,
+				03E440FA1B4F2D1400BB2178 /* worker_thread.mm in Sources */,
 				03B7777D18131F9C0088D6DE /* config.mm in Sources */,
 				03B7777E18131F9C0088D6DE /* event_tap.mm in Sources */,
 				03B7777F18131F9C0088D6DE /* metamove.mm in Sources */,

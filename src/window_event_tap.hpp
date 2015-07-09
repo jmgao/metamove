@@ -23,18 +23,17 @@
 #include <atomic>
 #include <thread>
 #include "event_tap.hpp"
+#include "worker_thread.hpp"
 
 class WindowEventTap : public EventTap {
 protected:
     CGEventFlags modifiers;
-    AXUIElementRef window = nullptr;
-    bool raise_window_on_action;
 
-    std::atomic<int32_t> x;
-    std::atomic<int32_t> y;
+public:
+    const bool raise_window_on_action;
 
-    std::atomic<bool> completed;
-    std::thread worker_thread;
+protected:
+    std::shared_ptr<WindowOperation> current_window;
 
 public:
     WindowEventTap(
@@ -45,14 +44,14 @@ public:
     void set_modifiers(CGEventFlags modifiers);
 
 protected:
-    void worker_thread_perform(void);
-
     virtual bool on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
     virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y) override;
     virtual bool on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
-    virtual bool on_drag_start(void) = 0;
-    virtual void on_drag(CGFloat x, CGFloat y) = 0;
-    virtual void on_drag_end(void) = 0;
+
+public:
+    virtual bool on_drag_start(std::shared_ptr<WindowOperation> window_op, AXUIElementRef window) = 0;
+    virtual void on_drag(std::shared_ptr<WindowOperation> window_op, CGFloat x, CGFloat y) = 0;
+    virtual void on_drag_end(std::shared_ptr<WindowOperation> window_op) = 0;
 };
 
 class MoveWindowEventTap : public WindowEventTap {
@@ -65,10 +64,9 @@ public:
         CGEventFlags modifiers,
         bool raise_window_on_action);
 
-private:
-    virtual bool on_drag_start(void) override;
-    virtual void on_drag(CGFloat x, CGFloat y) override;
-    virtual void on_drag_end(void) override;
+    virtual bool on_drag_start(std::shared_ptr<WindowOperation> window_op, AXUIElementRef window) override;
+    virtual void on_drag(std::shared_ptr<WindowOperation> window_op, CGFloat x, CGFloat y) override;
+    virtual void on_drag_end(std::shared_ptr<WindowOperation> window_op) override;
 };
 
 class ResizeWindowEventTap : public WindowEventTap {
@@ -81,8 +79,7 @@ public:
         CGEventFlags modifiers,
         bool raise_window_on_action);
 
-protected:
-    virtual bool on_drag_start(void) override;
-    virtual void on_drag(CGFloat x, CGFloat y) override;
-    virtual void on_drag_end(void) override;
+    virtual bool on_drag_start(std::shared_ptr<WindowOperation> window_op, AXUIElementRef window) override;
+    virtual void on_drag(std::shared_ptr<WindowOperation> window_op, CGFloat x, CGFloat y) override;
+    virtual void on_drag_end(std::shared_ptr<WindowOperation> window_op) override;
 };

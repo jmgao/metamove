@@ -25,35 +25,13 @@
 WindowEventTap::WindowEventTap(int64_t event_mask, CGEventFlags modifiers, bool raise_window_on_action) :
     EventTap(event_mask),
     modifiers(modifiers),
-    raise_window_on_action(raise_window_on_action),
-    completed(false)
+    raise_window_on_action(raise_window_on_action)
 {
 }
 
 void WindowEventTap::set_modifiers(CGEventFlags modifiers)
 {
     this->modifiers = modifiers;
-}
-
-void WindowEventTap::worker_thread_perform(void)
-{
-    int old_x = -1, old_y = -1;
-    while (!this->completed) {
-        int current_x, current_y;
-        std::tie(current_x, current_y) = std::tie(this->x, this->y);
-        if (old_x != current_x || old_y != current_y) {
-            // auto start = std::chrono::high_resolution_clock::now();
-            this->on_drag(this->x, this->y);
-            // auto end = std::chrono::high_resolution_clock::now();
-            // using ms = std::chrono::duration<float, std::chrono::milliseconds::period>;
-            // NSLog(@"Operation %d duration: %0.3f ms", i, ms(end - start).count());
-        } else {
-            static const auto desired_duration = std::chrono::microseconds(16667);
-            std::this_thread::sleep_for(desired_duration);
-        }
-
-        std::tie(old_x, old_y) = std::tie(current_x, current_y);
-    }
 }
 
 bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
@@ -67,59 +45,33 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
         return false;
     }
 
-    this->window = window_get_from_point(CGEventGetLocation(event));
-    if (!this->window) {
-        return false;
-    }
-
-    if (!this->on_drag_start()) {
-        this->window = nullptr;
-        return false;
-    }
-
-    CGEventSetFlags(event, flags | kCGEventFlagMaskNonCoalesced);
-
-    if (this->raise_window_on_action) {
-        window_raise(this->window);
-    }
-
-    assert(!this->worker_thread.joinable() && "Worker thread is still running");
-
-    this->completed = false;
-    this->worker_thread = std::thread(
-        [this](void) {
-            this->worker_thread_perform();
-        });
+    CGPoint event_location = CGEventGetLocation(event);
+    this->current_window = WorkerThread::instance.begin_operation(event_location.x, event_location.y, this);
 
     return true;
 }
 
 bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y)
 {
-    if (!this->window) {
+    if (!this->current_window) {
         return false;
     }
 
-    this->x += delta_x;
-    this->y += delta_y;
+    this->current_window->x += delta_x;
+    this->current_window->y += delta_y;
 
-    assert(this->worker_thread.joinable() && "Worker thread died unexpectedly");
     return true;
 }
 
 bool WindowEventTap::on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event)
 {
-    if (!this->window) {
+    if (!this->current_window) {
         return false;
     }
 
-    assert(this->worker_thread.joinable() && "Worker thread died unexpectedly");
-    this->completed = true;
-    this->worker_thread.join();
-
-    this->on_drag_end();
-    CFRelease(this->window);
-    this->window = nullptr;
+    this->current_window->completed = true;
+    this->on_drag_end(this->current_window);
+    this->current_window = nullptr;
 
     return true;
 }
@@ -129,23 +81,25 @@ MoveWindowEventTap::MoveWindowEventTap(int64_t event_mask, CGEventFlags modifier
 {
 }
 
-bool MoveWindowEventTap::on_drag_start(void)
+bool MoveWindowEventTap::on_drag_start(std::shared_ptr<WindowOperation> window_op, AXUIElementRef window)
 {
-    assert(this->window);
+    assert(window_op);
+    assert(window);
 
     CGPoint position = window_get_position(window);
-    std::tie(this->x, this->y) = std::tie(position.x, position.y);
+    std::tie(window_op->x, window_op->y) = std::tie(position.x, position.y);
 
     return true;
 }
 
-void MoveWindowEventTap::on_drag(CGFloat x, CGFloat y)
+void MoveWindowEventTap::on_drag(std::shared_ptr<WindowOperation> window_op, CGFloat x, CGFloat y)
 {
-    assert(window);
-    window_set_position(window, {x, y});
+    assert(window_op);
+    assert(window_op->window);
+    window_set_position(window_op->window, {x, y});
 }
 
-void MoveWindowEventTap::on_drag_end(void)
+void MoveWindowEventTap::on_drag_end(std::shared_ptr<WindowOperation> window_op)
 {
 }
 
@@ -154,23 +108,25 @@ ResizeWindowEventTap::ResizeWindowEventTap(int64_t event_mask, CGEventFlags modi
 {
 }
 
-bool ResizeWindowEventTap::on_drag_start(void)
+bool ResizeWindowEventTap::on_drag_start(std::shared_ptr<WindowOperation> window_op, AXUIElementRef window)
 {
+    assert(window_op);
     assert(window);
 
     CGSize size = window_get_size(window);
-    std::tie(this->x, this->y) = std::tie(size.width, size.height);
+    std::tie(window_op->x, window_op->y) = std::tie(size.width, size.height);
 
     return true;
 }
 
-void ResizeWindowEventTap::on_drag(CGFloat x, CGFloat y)
+void ResizeWindowEventTap::on_drag(std::shared_ptr<WindowOperation> window_op, CGFloat x, CGFloat y)
 {
-    assert(window);
-    window_set_size(window, {x, y});
+    assert(window_op);
+    assert(window_op->window);
+    window_set_size(window_op->window, {CGFloat(window_op->x), CGFloat(window_op->y)});
 }
 
-void ResizeWindowEventTap::on_drag_end(void)
+void ResizeWindowEventTap::on_drag_end(std::shared_ptr<WindowOperation> window_op)
 {
 }
 
