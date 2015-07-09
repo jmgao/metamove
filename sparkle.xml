@@ -6,6 +6,12 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
+            <title>version 0.3.7 (bugfix)</title>
+            <pubDate>Thu, 9 Jul 2015 16:22:16 -0800</pubDate>>
+            <sparkle:releaseNotesLink>https://jmgao.github.io/metamove/sparkle/0.3.7.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/jmgao/metamove/releases/download/v0.3.7/metamove-0.3.7.zip" sparkle:version="0.3.7" length="468067" type="application/octet-stream" />
+         </item>
+         <item>
             <title>version 0.3.6 (Yosemite dark mode support)</title>
             <pubDate>Mon, 20 Oct 2014 18:09:00 -0800</pubDate>
             <sparkle:releaseNotesLink>https://jmgao.github.io/metamove/sparkle/0.3.6.html</sparkle:releaseNotesLink>
