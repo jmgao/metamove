@@ -29,7 +29,10 @@ protected:
     CGEventFlags modifiers;
     AXUIElementRef window = nullptr;
     bool raise_window_on_action;
-    std::atomic<int64_t> delta;
+
+    std::atomic<int32_t> x;
+    std::atomic<int32_t> y;
+
     std::atomic<bool> completed;
     std::thread worker_thread;
 
@@ -45,10 +48,10 @@ protected:
     void worker_thread_perform(void);
 
     virtual bool on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
-    virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) override;
+    virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y) override;
     virtual bool on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEventRef event) override;
     virtual bool on_drag_start(void) = 0;
-    virtual void on_drag(int64_t delta_x, int64_t delta_y) = 0;
+    virtual void on_drag(CGFloat x, CGFloat y) = 0;
     virtual void on_drag_end(void) = 0;
 };
 
@@ -64,7 +67,7 @@ public:
 
 private:
     virtual bool on_drag_start(void) override;
-    virtual void on_drag(int64_t delta_x, int64_t delta_y) override;
+    virtual void on_drag(CGFloat x, CGFloat y) override;
     virtual void on_drag_end(void) override;
 };
 
@@ -80,6 +83,6 @@ public:
 
 protected:
     virtual bool on_drag_start(void) override;
-    virtual void on_drag(int64_t delta_x, int64_t delta_y) override;
+    virtual void on_drag(CGFloat x, CGFloat y) override;
     virtual void on_drag_end(void) override;
 };

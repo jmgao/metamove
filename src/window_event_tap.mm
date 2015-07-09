@@ -17,6 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <Foundation/Foundation.h>
 #include <cstdint>
 #include "window.hpp"
 #include "window_event_tap.hpp"
@@ -25,7 +26,6 @@ WindowEventTap::WindowEventTap(int64_t event_mask, CGEventFlags modifiers, bool 
     EventTap(event_mask),
     modifiers(modifiers),
     raise_window_on_action(raise_window_on_action),
-    delta(0),
     completed(false)
 {
 }
@@ -37,22 +37,22 @@ void WindowEventTap::set_modifiers(CGEventFlags modifiers)
 
 void WindowEventTap::worker_thread_perform(void)
 {
-    int64_t delta;
-    while ((delta = this->delta.exchange(0)) != 0 || !this->completed) {
-        auto start = std::chrono::high_resolution_clock::now();
-        if (delta != 0) {
-            int32_t delta_x = ((int32_t *)&delta)[0];
-            int32_t delta_y = ((int32_t *)&delta)[1];
-
-            this->on_drag(delta_x, delta_y);
+    int old_x = -1, old_y = -1;
+    while (!this->completed) {
+        int current_x, current_y;
+        std::tie(current_x, current_y) = std::tie(this->x, this->y);
+        if (old_x != current_x || old_y != current_y) {
+            // auto start = std::chrono::high_resolution_clock::now();
+            this->on_drag(this->x, this->y);
+            // auto end = std::chrono::high_resolution_clock::now();
+            // using ms = std::chrono::duration<float, std::chrono::milliseconds::period>;
+            // NSLog(@"Operation %d duration: %0.3f ms", i, ms(end - start).count());
+        } else {
+            static const auto desired_duration = std::chrono::microseconds(16667);
+            std::this_thread::sleep_for(desired_duration);
         }
-        auto end = std::chrono::high_resolution_clock::now();
 
-        static const auto desired_duration = std::chrono::microseconds(16667);
-        auto actual_duration = end - start;
-        if (actual_duration < desired_duration) {
-            std::this_thread::sleep_for(desired_duration - actual_duration);
-        }
+        std::tie(old_x, old_y) = std::tie(current_x, current_y);
     }
 }
 
@@ -85,7 +85,6 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
 
     assert(!this->worker_thread.joinable() && "Worker thread is still running");
 
-    this->delta = 0;
     this->completed = false;
     this->worker_thread = std::thread(
         [this](void) {
@@ -95,19 +94,14 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
     return true;
 }
 
-bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y)
+bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y)
 {
     if (!this->window) {
         return false;
     }
 
-    int64_t previous = this->delta.load();
-    int64_t replacement;
-    do {
-        replacement = previous;
-        ((int32_t *)&replacement)[0] += delta_x;
-        ((int32_t *)&replacement)[1] += delta_y;
-    } while (!this->delta.compare_exchange_weak(previous, replacement));
+    this->x += delta_x;
+    this->y += delta_y;
 
     assert(this->worker_thread.joinable() && "Worker thread died unexpectedly");
     return true;
@@ -126,7 +120,6 @@ bool WindowEventTap::on_mouse_up(CGEventTapProxy proxy, CGEventType type, CGEven
     this->on_drag_end();
     CFRelease(this->window);
     this->window = nullptr;
-    assert(this->delta == 0);
 
     return true;
 }
@@ -139,21 +132,21 @@ MoveWindowEventTap::MoveWindowEventTap(int64_t event_mask, CGEventFlags modifier
 bool MoveWindowEventTap::on_drag_start(void)
 {
     assert(this->window);
-    assert(!this->window_position.x && !this->window_position.y);
-    this->window_position = window_get_position(window);
+
+    CGPoint position = window_get_position(window);
+    std::tie(this->x, this->y) = std::tie(position.x, position.y);
+
     return true;
 }
 
-void MoveWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y)
+void MoveWindowEventTap::on_drag(CGFloat x, CGFloat y)
 {
     assert(window);
-    this->window_position.x += delta_x;
-    this->window_position.y += delta_y;
-    window_set_position(window, this->window_position);
+    window_set_position(window, {x, y});
 }
 
-void MoveWindowEventTap::on_drag_end(void) {
-    this->window_position = { 0, 0 };
+void MoveWindowEventTap::on_drag_end(void)
+{
 }
 
 ResizeWindowEventTap::ResizeWindowEventTap(int64_t event_mask, CGEventFlags modifiers, bool raise_window_on_action) :
@@ -164,21 +157,20 @@ ResizeWindowEventTap::ResizeWindowEventTap(int64_t event_mask, CGEventFlags modi
 bool ResizeWindowEventTap::on_drag_start(void)
 {
     assert(window);
-    assert(!this->window_size.width && !this->window_size.height);
-    this->window_size = window_get_size(window);
+
+    CGSize size = window_get_size(window);
+    std::tie(this->x, this->y) = std::tie(size.width, size.height);
+
     return true;
 }
 
-void ResizeWindowEventTap::on_drag(int64_t delta_x, int64_t delta_y)
+void ResizeWindowEventTap::on_drag(CGFloat x, CGFloat y)
 {
     assert(window);
-    this->window_size.width += delta_x;
-    this->window_size.height += delta_y;
-    window_set_size(window, this->window_size);
+    window_set_size(window, {x, y});
 }
 
 void ResizeWindowEventTap::on_drag_end(void)
 {
-    this->window_size = { 0, 0 };
 }
 

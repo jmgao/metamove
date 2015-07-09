@@ -67,7 +67,7 @@ CGEventRef EventTap::cg_event_callback(CGEventTapProxy proxy, CGEventType type, 
 
     bool consume_event = false;
     CGPoint location = CGEventGetLocation(event);
-    int64_t delta_x = location.x - event_tap->last_mouse_position.x,
+    CGFloat delta_x = location.x - event_tap->last_mouse_position.x,
             delta_y = location.y - event_tap->last_mouse_position.y;
 
 #pragma clang diagnostic push

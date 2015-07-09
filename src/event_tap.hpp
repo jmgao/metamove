@@ -44,7 +44,7 @@ protected:
         return on_mouse_down(proxy, type, event);
     }
 
-    virtual bool on_left_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) {
+    virtual bool on_left_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y) {
         return on_mouse_drag(proxy, type, event, delta_x, delta_y);
     }
 
@@ -56,7 +56,7 @@ protected:
         return on_mouse_down(proxy, type, event);
     }
 
-    virtual bool on_right_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) {
+    virtual bool on_right_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y) {
         return on_mouse_drag(proxy, type, event, delta_x, delta_y);
     }
 
@@ -68,7 +68,7 @@ protected:
         return false;
     }
 
-    virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, int64_t delta_x, int64_t delta_y) {
+    virtual bool on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y) {
         return false;
     }
 
