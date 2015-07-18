@@ -189,6 +189,11 @@ CGPoint window_get_position(AXUIElementRef window)
         assert(false && "Unable to get AXValueRef for window position");
     }
 
+#ifdef MAC_OS_X_VERSION_10_11
+    #define kAXValueCGPointType kAXValueTypeCGPoint
+    #define kAXValueCGSizeType kAXValueTypeCGSize
+#endif
+
     assert(AXValueGetType(position_wrapper) == kAXValueCGPointType);
     if (!AXValueGetValue(position_wrapper, kAXValueCGPointType, &result)) {
         assert(false && "Unable to get CGPoint for window position");

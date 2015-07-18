@@ -82,13 +82,13 @@ loadSettings
 - (void)
 saveSettings
 {
-    CGEventMask modifiers = 0;
+    uint64_t modifiers = 0;
     set_move_button(config_mouse_button([moveRadioButtons selectedTag]));
     if ([moveModifierControlButton state]) modifiers |= kCGEventFlagMaskControl;
     if ([moveModifierOptionButton state]) modifiers |= kCGEventFlagMaskAlternate;
     if ([moveModifierCommandButton state]) modifiers |= kCGEventFlagMaskCommand;
     if ([moveModifierShiftButton state]) modifiers |= kCGEventFlagMaskShift;
-    set_move_modifiers(modifiers);
+    set_move_modifiers(CGEventFlags(modifiers));
 
     modifiers = 0;
     set_resize_button(config_mouse_button([resizeRadioButtons selectedTag]));
@@ -96,7 +96,7 @@ saveSettings
     if ([resizeModifierOptionButton state]) modifiers |= kCGEventFlagMaskAlternate;
     if ([resizeModifierCommandButton state]) modifiers |= kCGEventFlagMaskCommand;
     if ([resizeModifierShiftButton state]) modifiers |= kCGEventFlagMaskShift;
-    set_resize_modifiers(modifiers);
+    set_resize_modifiers(CGEventFlags(modifiers));
 }
 
 - (IBAction)

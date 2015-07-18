@@ -34,7 +34,7 @@ config_mouse_button get_resize_button(void);
 void set_move_button(config_mouse_button button);
 void set_resize_button(config_mouse_button button);
 
-CGEventMask get_move_modifiers(void);
-CGEventMask get_resize_modifiers(void);
-void set_move_modifiers(CGEventMask modifiers);
-void set_resize_modifiers(CGEventMask modifiers);
+CGEventFlags get_move_modifiers(void);
+CGEventFlags get_resize_modifiers(void);
+void set_move_modifiers(CGEventFlags modifiers);
+void set_resize_modifiers(CGEventFlags modifiers);

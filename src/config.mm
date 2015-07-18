@@ -80,30 +80,30 @@ void set_resize_button(config_mouse_button button) {
     set_button(resize_button_key, button);
 }
 
-CGEventMask get_move_modifiers(void)
+CGEventFlags get_move_modifiers(void)
 {
     Boolean key_exists = false;
     CFIndex result = CFPreferencesGetAppIntegerValue(move_modifiers_key, application_id, &key_exists);
 
-    return key_exists ? result : kCGEventFlagMaskCommand | kCGEventFlagMaskShift;
+    return CGEventFlags(key_exists ? result : kCGEventFlagMaskCommand | kCGEventFlagMaskShift);
 }
 
-CGEventMask get_resize_modifiers(void)
+CGEventFlags get_resize_modifiers(void)
 {
     Boolean key_exists = false;
     CFIndex result = CFPreferencesGetAppIntegerValue(resize_modifiers_key, application_id, &key_exists);
 
-    return key_exists ? result : kCGEventFlagMaskAlternate | kCGEventFlagMaskShift;
+    return CGEventFlags(key_exists ? result : kCGEventFlagMaskAlternate | kCGEventFlagMaskShift);
 }
 
-void set_move_modifiers(CGEventMask modifiers) {
+void set_move_modifiers(CGEventFlags modifiers) {
     CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers);
     CFPreferencesSetAppValue(move_modifiers_key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
     CFRelease(value);
 }
 
-void set_resize_modifiers(CGEventMask modifiers) {
+void set_resize_modifiers(CGEventFlags modifiers) {
     CFNumberRef value = CFNumberCreate(nullptr, kCFNumberCFIndexType, &modifiers);
     CFPreferencesSetAppValue(resize_modifiers_key, value, application_id);
     CFPreferencesAppSynchronize(application_id);
