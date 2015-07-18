@@ -28,7 +28,7 @@
 #include <mutex>
 #include <thread>
 
-struct WindowEventTap;
+class WindowEventTap;
 
 struct WindowOperation {
     AXUIElementRef window = nullptr;

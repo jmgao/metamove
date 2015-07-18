@@ -25,8 +25,6 @@
 #include "window_event_tap.hpp"
 #include "worker_thread.hpp"
 
-struct WindowEventTap;
-
 WorkerThread WorkerThread::instance;
 
 WorkerThread::WorkerThread(void)
