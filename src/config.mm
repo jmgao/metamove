@@ -26,7 +26,6 @@ static CFStringRef move_button_key = CFSTR("move_button");
 static CFStringRef resize_button_key = CFSTR("resize_button");
 static CFStringRef move_modifiers_key = CFSTR("move_modifiers");
 static CFStringRef resize_modifiers_key = CFSTR("resize_modifiers");
-static CFStringRef raise_window_key = CFSTR("resize_modifiers");
 
 config_mouse_button get_button(CFStringRef key)
 {
