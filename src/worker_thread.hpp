@@ -32,8 +32,8 @@ class WindowEventTap;
 
 struct WindowOperation {
     AXUIElementRef window = nullptr;
-    std::atomic<int32_t> x;
-    std::atomic<int32_t> y;
+    std::atomic<CGFloat> x;
+    std::atomic<CGFloat> y;
     std::atomic<bool> completed;
     WindowEventTap *event_tap;
 

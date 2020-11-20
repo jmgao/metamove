@@ -51,14 +51,19 @@ bool WindowEventTap::on_mouse_down(CGEventTapProxy proxy, CGEventType type, CGEv
     return true;
 }
 
+static void atomic_fetch_add(std::atomic<CGFloat>& atomic, CGFloat rhs) {
+    CGFloat prev = atomic.load();
+    while (!atomic.compare_exchange_weak(prev, prev + rhs));
+}
+
 bool WindowEventTap::on_mouse_drag(CGEventTapProxy proxy, CGEventType type, CGEventRef event, CGFloat delta_x, CGFloat delta_y)
 {
     if (!this->current_window) {
         return false;
     }
 
-    this->current_window->x += delta_x;
-    this->current_window->y += delta_y;
+    atomic_fetch_add(this->current_window->x, delta_x);
+    atomic_fetch_add(this->current_window->y, delta_y);
 
     return true;
 }

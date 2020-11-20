@@ -34,6 +34,11 @@ EventTap::EventTap(int64_t event_mask) :
             kCGEventMaskForAllEvents,
             cg_event_callback,
             this);
+    if (!this->event_tap) {
+        NSLog(@"failed to create event tap");
+        return;
+    }
+
     this->run_loop_source = CFMachPortCreateRunLoopSource(nullptr, this->event_tap, 0);
     CFRunLoopAddSource(CFRunLoopGetMain(), this->run_loop_source, kCFRunLoopCommonModes);
 }
