@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0308AAAB18357EDD00105E96 /* PreferenceWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0308AAAA18357EDD00105E96 /* PreferenceWindow.xib */; };
-		033179F019F5D4A700857E62 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C59039183C51EC008D35EB /* Sparkle.framework */; };
 		037309D418340200002AFE3B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037309D318340200002AFE3B /* main.mm */; };
 		037309E918342406002AFE3B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A3ED1F18051A960062A9F0 /* Cocoa.framework */; };
 		03730A0B18342469002AFE3B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03730A0418342469002AFE3B /* main.mm */; };
@@ -31,7 +30,6 @@
 		03C15ECA183776E6001233F2 /* tray_icon_enabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBC183776E6001233F2 /* tray_icon_enabled.png */; };
 		03C15ECB183776E6001233F2 /* tray_icon_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */; };
 		03C15ED318377884001233F2 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 03C15ED218377884001233F2 /* icon.icns */; };
-		03C5903D183C55CC008D35EB /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03C59039183C51EC008D35EB /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		03E440F91B4F2D1400BB2178 /* worker_thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E440F71B4F2D1400BB2178 /* worker_thread.mm */; };
 		03E440FA1B4F2D1400BB2178 /* worker_thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E440F71B4F2D1400BB2178 /* worker_thread.mm */; };
 		03EF62D31834941F007187FA /* PreferenceWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03EF62D21834941F007187FA /* PreferenceWindowController.mm */; };
@@ -54,7 +52,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				03C5903D183C55CC008D35EB /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +90,6 @@
 		03C15EBD183776E6001233F2 /* tray_icon_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tray_icon_enabled@2x.png"; path = "src/tray/icons/tray_icon_enabled@2x.png"; sourceTree = SOURCE_ROOT; };
 		03C15ED218377884001233F2 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = src/tray/icons/icon.icns; sourceTree = SOURCE_ROOT; };
 		03C15ED5183785CF001233F2 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = SOURCE_ROOT; };
-		03C59039183C51EC008D35EB /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = lib/Sparkle.framework; sourceTree = "<group>"; };
 		03E440F71B4F2D1400BB2178 /* worker_thread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = worker_thread.mm; path = src/worker_thread.mm; sourceTree = SOURCE_ROOT; };
 		03E440F81B4F2D1400BB2178 /* worker_thread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = worker_thread.hpp; path = src/worker_thread.hpp; sourceTree = SOURCE_ROOT; };
 		03EF62D11834941F007187FA /* PreferenceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreferenceWindowController.h; path = src/tray/PreferenceWindowController.h; sourceTree = SOURCE_ROOT; };
@@ -106,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				033179F019F5D4A700857E62 /* Sparkle.framework in Frameworks */,
 				037309E918342406002AFE3B /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,7 +176,6 @@
 		03A3ED1E18051A950062A9F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				03C59039183C51EC008D35EB /* Sparkle.framework */,
 				03A3ED47180520770062A9F0 /* CoreFoundation.framework */,
 				03A3ED4518051E2A0062A9F0 /* ApplicationServices.framework */,
 				03A3ED1F18051A960062A9F0 /* Cocoa.framework */,
